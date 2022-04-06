@@ -1,0 +1,63 @@
+
+.container {
+	padding-bottom: 20rpx;
+	color: #333;
+}
+.tui-header {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	padding: 0 8rpx;
+	box-sizing: border-box;
+}
+.tui-searchbox {
+	flex: 1;
+	height: 64rpx;
+	margin-right: 30rpx;
+	border-radius: 15px;
+	font-size: 12px;
+	background: rgba(255, 255, 255, 0.5);
+	padding: 3px 10px;
+	box-sizing: border-box;
+	color: #ffffff;
+	display: flex;
+	align-items: center;
+}
+.tui-search-text {
+	padding-left: 16rpx;
+}
+.tui-back__box {
+	padding-right: 12rpx;
+	padding-left: 4rpx;
+	flex-shrink: 0;
+}
+.tui-flex__center {
+	display: flex;
+	align-items: center;
+}
+.tui-flex {
+	display: flex;
+	align-items: center;
+}
+.tui-list-cell {
+		display: flex;
+        width: 100%;
+        justify-content: space-between;
+		align-items: center;
+		padding: 24rpx 30rpx;
+		font-size: 30rpx;
+}
+.tui-info-box {
+		font-size: 26rpx;
+}
+.tui-register-time{
+        color: #a8a8a8
+}
+.tui-avatar {
+		width: 100rpx;
+		height: 100rpx;
+		border-radius: 50%;
+   		overflow: hidden;
+		margin-right: 20rpx;
+}
+

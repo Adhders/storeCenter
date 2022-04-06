@@ -1,0 +1,53 @@
+@charset "UTF-8";
+/**
+ * scss预处理 内置的常用样式变量
+ * 后期项目会考虑使用scss
+*/
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.tui-popup-item.data-v-cede853a {
+  padding: 34rpx;
+  display: flex;
+  align-items: center;
+  font-size: 32rpx;
+  position: relative;
+}
+.tui-popup-item.data-v-cede853a::after {
+  content: '';
+  position: absolute;
+  border-bottom: 1rpx solid #888;
+  -webkit-transform: scaleY(0.5);
+  transform: sc8aleY(0.5);
+  bottom: 0;
+  right: 0;
+  left: 38rpx;
+}
+.tui-popup-item .tui-bubble-popup_title.data-v-cede853a {
+  padding-left: 20rpx;
+}
+.tui-start.data-v-cede853a {
+  border-top-left-radius: 8rpx;
+  border-top-right-radius: 8rpx;
+}
+.tui-last.data-v-cede853a {
+  border-bottom-left-radius: 8rpx;
+  border-bottom-right-radius: 8rpx;
+}
+.tui-last.data-v-cede853a::after {
+  border-bottom: 0 !important;
+}
+.tui-item-active.data-v-cede853a {
+  background-color: #444;
+}
+

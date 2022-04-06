@@ -1,0 +1,1 @@
+<view class="container"><textarea class="tui-textarea" placeholder="回复Mocha" maxlength="200" auto-focus="{{true}}"></textarea><view class="tui-btn__box"><tui-button vue-id="77254879-1" type="danger" height="88rpx" shape="circle" bind:__l="__l" vue-slots="{{['default']}}">发送</tui-button></view></view>

@@ -1,0 +1,43 @@
+@charset "UTF-8";
+/**
+ * scss预处理 内置的常用样式变量
+ * 后期项目会考虑使用scss
+*/
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.container.data-v-4cbf6945 {
+  padding-bottom: 48rpx;
+}
+.container .tui-top.data-v-4cbf6945 {
+  margin-top: 20rpx;
+}
+.container .tui-notice-item.data-v-4cbf6945 {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 32rpx;
+}
+.container .tui-notice-item .tui-list-item_title.data-v-4cbf6945 {
+  display: flex;
+  align-items: center;
+}
+.container .tui-notice-item .tui-scale-small.data-v-4cbf6945 {
+  -webkit-transform: scale(0.8);
+          transform: scale(0.8);
+  -webkit-transform-origin: 100% center;
+          transform-origin: 100% center;
+}
+

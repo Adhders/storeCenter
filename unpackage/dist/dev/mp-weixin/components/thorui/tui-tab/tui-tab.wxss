@@ -1,0 +1,62 @@
+
+.tui-scroll__view.data-v-4a577828 {
+	width: 100%;
+	height: 80rpx;
+	overflow: hidden;
+}
+.tui-tabs__fixed.data-v-4a577828 {
+	position: fixed;
+	left: 0;
+}
+.tui-tabs__sticky.data-v-4a577828 {
+	position: -webkit-sticky;
+	position: sticky;
+	left: 0;
+}
+.tui-tabs__wrap.data-v-4a577828 {
+	padding-bottom: 20rpx;
+}
+.tui-tabs__list.data-v-4a577828 {
+	position: relative;
+	height: 80rpx;
+	display: flex;
+}
+.tui-tabs__scroll.data-v-4a577828 {
+	white-space: nowrap !important;
+	display: block !important;
+}
+.tui-tabs__scroll .tui-tabs__item.data-v-4a577828 {
+	padding: 0 30rpx;
+	display: inline-flex;
+}
+.tui-tabs__scroll .tui-item__child.data-v-4a577828 {
+	display: block !important;
+}
+.tui-tabs__item.data-v-4a577828 {
+	flex: 1;
+	text-align: center;
+	padding: 0 10rpx;
+	box-sizing: border-box;
+	transition: color 0.3s ease-in-out;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	z-index: 2;
+}
+.tui-item__child.data-v-4a577828 {
+	display: inline-block;
+}
+.tui-tabs__line.data-v-4a577828 {
+	position: absolute;
+	left: 0;
+	width: 0;
+	display: inline-block;
+	z-index: 1;
+}
+.tui-tabs__line.tui-transition.data-v-4a577828 {
+	transition: width 0.3s, -webkit-transform 0.3s;
+	transition: width 0.3s, transform 0.3s;
+	transition: width 0.3s, transform 0.3s, -webkit-transform 0.3s;
+}
+

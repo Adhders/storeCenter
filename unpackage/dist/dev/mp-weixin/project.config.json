@@ -1,0 +1,29 @@
+{
+    "description": "项目配置文件。",
+    "packOptions": {
+        "ignore": []
+    },
+    "setting": {
+        "urlCheck": false,
+        "es6": true,
+        "minified": true
+    },
+    "compileType": "miniprogram",
+    "libVersion": "",
+    "appid": "wx2c843f3c5f2a64f2",
+    "projectname": "ThorUI-mall-uni",
+    "condition": {
+        "search": {
+            "list": []
+        },
+        "conversation": {
+            "list": []
+        },
+        "game": {
+            "list": []
+        },
+        "miniprogram": {
+            "list": []
+        }
+    }
+}
