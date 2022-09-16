@@ -9,6 +9,7 @@
     "tui-button": "/components/thorui/tui-button/tui-button",
     "tui-no-data": "/components/thorui/tui-no-data/tui-no-data",
     "tui-loadmore": "/components/thorui/tui-loadmore/tui-loadmore",
-    "tui-nomore": "/components/thorui/tui-nomore/tui-nomore"
+    "tui-nomore": "/components/thorui/tui-nomore/tui-nomore",
+    "t-order-item": "/components/views/t-order-item/t-order-item"
   }
 }

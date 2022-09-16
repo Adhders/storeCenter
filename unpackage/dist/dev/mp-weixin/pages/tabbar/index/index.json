@@ -1,9 +1,11 @@
 {
-  "navigationBarTitleText": "商户助手",
+  "navigationBarTitleText": "",
   "enablePullDownRefresh": true,
+  "navigationStyle": "custom",
   "usingComponents": {
     "tui-icon": "/components/thorui/tui-icon/tui-icon",
     "tui-list-cell": "/components/thorui/tui-list-cell/tui-list-cell",
-    "tui-notice-bar": "/components/thorui/tui-notice-bar/tui-notice-bar"
+    "tui-notice-bar": "/components/thorui/tui-notice-bar/tui-notice-bar",
+    "tui-bottom-navigation": "/components/thorui/tui-bottom-navigation/tui-bottom-navigation"
   }
 }

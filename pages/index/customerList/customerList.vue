@@ -40,9 +40,11 @@
 			}
 		},
         onLoad() {
-			let url = '/getStoreCustomer/' + this.$store.state.appid
+			this.pid = uni.getStorageSync("pid")
+			this.store_id = uni.getStorageSync("store_id")
+			let url = '/getStoreAllCustomer/' + this.pid + '/' + this.store_id
 			this.tui.request(url,'GET', undefined, true).then((res)=>{
-                this.loadding = false
+				this.loadding = false
 				this.customerList = res.customerList
 			})
         },
@@ -56,7 +58,6 @@
 				uni.navigateBack();
 			},
 			initHeader(e) {
-				console.log('e', e)
 				this.width = Number(e.left);
 				this.height = Number(e.height);
 				this.top = Number(e.top);

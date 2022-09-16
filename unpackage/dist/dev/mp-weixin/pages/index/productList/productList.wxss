@@ -6,232 +6,40 @@
 	padding: 0 8rpx;
 	box-sizing: border-box;
 }
-.tui-searchbox {
-	flex: 1;
-	height: 64rpx;
-	margin-right: 30rpx;
-	border-radius: 15px;
-	font-size: 12px;
-	background: rgba(255, 255, 255, 0.5);
-	padding: 3px 10px;
-	box-sizing: border-box;
-	color: #ffffff;
-	display: flex;
-	align-items: center;
-}
-.tui-search-text {
-	padding-left: 16rpx;
-}
 .tui-back__box {
 	padding-right: 12rpx;
 	padding-left: 4rpx;
 	flex-shrink: 0;
 }
-.tui-menu__box {
-	padding-right: 26rpx;
-	padding-left: 24rpx;
-	flex-shrink: 0;
+.tui-title {
+	position: absolute;
+    width: 100%;
+    text-align: center;
 }
 .tui-flex__center {
 	display: flex;
 	align-items: center;
+	display: flex;
+    align-items: center;
+    font-size: 24rpx;
+    /* margin-top: 20rpx; */
+    justify-content: space-between;
 }
-.tui-btn__follow {
-	margin-left: auto;
-}
-.tui-follow__text {
-	padding-left: 6rpx;
+.tui-gray {
+	color: #656565;
 }
 .tui-padding {
 	width: 100%;
-	padding: 80rpx 25rpx 30rpx;
+	padding: 80rpx 20rpx 20rpx;
 	box-sizing: border-box;
-}
-.tui-flex {
-	display: flex;
-	align-items: center;
 }
 .tui-goods-tabs {
     position: fixed;
     background: #e41f19;
     z-index: 1000 !important;
 }
-
-/*========推荐 start=========*/
-
-/* .tui-ranking__header {
-	width: 100%;
-	padding: 30rpx 4rpx 24rpx;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	box-sizing: border-box;
-}
-
-.tui-ranking__title {
-	font-size: 30rpx;
-}
-
-.tui-ranking__tabs {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	font-size: 26rpx;
-	color: #999;
-}
-
-.tui-ranking__tabs view {
-	margin-left: 40rpx;
-}
-
-.tui-ranking__active {
-	color: #000;
-	position: relative;
-	transition: all 0.1s;
-}
-
-.tui-ranking__active::after {
-	content: ' ';
-	width: 60%;
-	position: absolute;
-	border-bottom: 2px solid #eb0909;
-	border-radius: 4px;
-	left: 20%;
-	bottom: -10rpx;
-}
-
-.tui-ranking__list {
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-
-.tui-justify__start {
-	justify-content: flex-start !important;
-}
-
-.tui-item-mr__16 {
-	margin-right: 16rpx;
-}
-
-.tui-ranking__item {
-	width: 224rpx;
-	border-radius: 12rpx;
-	overflow: hidden;
-	background-color: #fff;
-	padding-bottom: 20rpx;
-	box-shadow: 0 3rpx 20rpx rgba(183, 183, 183, 0.1);
-}
-
-.tui-ranking__item image {
-	width: 224rpx;
-	height: 224rpx;
-	display: block;
-}
-
-.tui-ranking__gtitle {
-	font-size: 24rpx;
-	line-height: 24rpx;
-	padding: 24rpx 12rpx 8rpx;
-	box-sizing: border-box;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.tui-ranking__sub {
-	font-size: 25rpx;
-	line-height: 25rpx;
-	padding: 8rpx 18rpx 8rpx;
-	transform: scale(0.8);
-	transform-origin: 0 center;
-	color: #999;
-}  */
-
-/* .tui-rg__title {
-	width: 98%;
-	font-size: 26rpx;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.tui-rg__attr {
-	font-size: 24rpx;
-	color: #999;
-	background-color: #f5f5f5;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	padding: 6rpx 16rpx;
-	border-radius: 20px;
-	transform: scale(0.8);
-	transform-origin: 0 center;
-	margin-top: 12rpx;
-}
-
-.tui-rg__interested {
-	font-size: 24rpx;
-	margin-top: 12rpx;
-}
-
-.tui-interested__num {
-	padding-left: 8rpx;
-	color: #999;
-} */
-
-/*=======推荐 end=======*/
-
-/*========商品 start======*/
-.tui-header__screen {
-	width: 100%;
-	height: 80rpx;
-	display: flex;
-    position: fixed;
-    z-index: 1000;
-	align-items: center;
-	background-color: #ffffff;
-	box-shadow: 0 3rpx 20rpx rgba(183, 183, 183, 0.1);
-}
-.tui-screen__item {
-	flex: 1;
-	flex-shrink: 0;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 28rpx;
-}
-.tui-screen__active {
-	color: #eb0909;
-}
-.tui-screen__price {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-	justify-content: center;
-	position: relative;
-}
-.tui-screen__price view {
-	position: absolute;
-	left: 0;
-}
-.tui-price__asc {
-	bottom: -14rpx;
-}
-.tui-price__desc {
-	top: -14rpx;
-}
 .tui-product-list {
-	display: flex;
-	justify-content: space-between;
-	flex-direction: row;
-	flex-wrap: wrap;
-	box-sizing: border-box;
-	padding-top: 90rpx;
-}
-.tui-goods-list {
-	margin-top: 80rpx
+	margin-top: 20rpx
 }
 .tui-product-container {
 	flex: 1;
@@ -242,16 +50,14 @@
 }
 .tui-pro-item {
 	width: 100%;
-	margin-bottom: 10rpx;
+	padding: 8rpx;
 	background: #fff;
 	box-sizing: border-box;
-	border-radius: 12rpx;
 	overflow: hidden;
 	transition: all 0.15s ease-in-out;
 }
 .tui-flex-list {
 	display: flex;
-	/* margin-bottom: 1rpx !important; */
 }
 .tui-pro-img {
 	width: 100%;
@@ -259,30 +65,29 @@
 	flex-shrink: 0;
 }
 .tui-proimg-list {
-	width: 260rpx;
-	height: 260rpx !important;
+	width: 180rpx;
+	height: 180rpx !important;
 	flex-shrink: 0;
-	border-radius: 12rpx;
+	border-radius: 8rpx;
 }
 .tui-pro-content {
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	box-sizing: border-box;
-	padding: 20rpx;
+	padding: 10rpx 16rpx;
 }
 .tui-pro-tit {
 	color: #2e2e2e;
-	font-size: 26rpx;
+	font-size: 28rpx;
+	word-wrap: break-word;
+    white-space:normal;
 	word-break: break-all;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 2;
-}
-.tui-pro-price {
-	padding-top: 18rpx;
 }
 .tui-sale-price {
 	font-size: 34rpx;
@@ -295,11 +100,27 @@
 	text-decoration: line-through;
 	padding-left: 12rpx;
 }
-.tui-pro-pay {
-	padding-top: 10rpx;
-	font-size: 24rpx;
-	color: #656565;
-}
 
 /*======商品======= end*/
+.bubble-popup {
+	position: absolute;
+	right: 135rpx;
+	bottom: 50rpx;
+}
+.tui-menu-item {
+	width: 100%;
+    padding: 16rpx 0;
+    text-align: center;
+    position: relative;
+}
+.tui-menu-item:not(:last-child):after{
+	content: "";
+    position: absolute;
+    border-bottom: 1px solid #eaeef1;
+    -webkit-transform: scaleY(.5);
+            transform: scaleY(.5);
+    bottom: 0;
+    right: 12px;
+    left: 12px;
+}
 

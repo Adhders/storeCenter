@@ -96,10 +96,10 @@ var components
 try {
   components = {
     tuiListCell: function() {
-      return __webpack_require__.e(/*! import() | components/thorui/tui-list-cell/tui-list-cell */ "components/thorui/tui-list-cell/tui-list-cell").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-list-cell/tui-list-cell.vue */ 275))
+      return __webpack_require__.e(/*! import() | components/thorui/tui-list-cell/tui-list-cell */ "components/thorui/tui-list-cell/tui-list-cell").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-list-cell/tui-list-cell.vue */ 296))
     },
     tuiButton: function() {
-      return __webpack_require__.e(/*! import() | components/thorui/tui-button/tui-button */ "components/thorui/tui-button/tui-button").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-button/tui-button.vue */ 289))
+      return __webpack_require__.e(/*! import() | components/thorui/tui-button/tui-button */ "components/thorui/tui-button/tui-button").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-button/tui-button.vue */ 317))
     }
   }
 } catch (e) {
@@ -195,6 +195,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 var _default =
 {
   data: function data() {
@@ -205,14 +206,21 @@ var _default =
   computed: {
     storeInfo: function storeInfo() {
       return this.$store.state.storeInfo;
+    },
+    isLogin: function isLogin() {
+      return this.$store.state.isLogin;
     } },
 
+  onLoad: function onLoad() {
+    console.log('storeInfo', this.storeInfo);
+    // let pid = uni.getStorageSync("pid")
+  },
   methods: {
     href: function href(page) {
       var url = "";
       switch (page) {
         case 1:
-          url = "/pages/my/userInfo/userInfo";
+          url = "/pages/my/storeInfo/storeInfo";
           break;
         case 2:
           url = "/pages/my/address/address";
@@ -232,6 +240,15 @@ var _default =
       uni.navigateTo({
         url: url });
 
+    },
+    login: function login() {
+      this.tui.href('/pages/login/login/login');
+    },
+    logout: function logout() {
+      uni.removeStorageSync('pid');
+      uni.removeStorageSync('token');
+      this.$store.commit('login', false);
+      this.tui.href('/pages/login/login/login');
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

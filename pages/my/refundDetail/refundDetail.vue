@@ -17,21 +17,7 @@
 		</tui-list-cell>
 		<view class="tui-order-item">
 			<tui-list-cell :hover="false" :lineLeft="false"><view class="tui-order-title">售后信息</view></tui-list-cell>
-			<block v-for="(item, index) in order.goodsList" :key="index">
-				<tui-list-cell padding="0">
-					<view class="tui-goods-item">
-						<image :src="item.defaultImageUrl" class="tui-goods-img"></image>
-						<view class="tui-goods-center">
-							<view class="tui-goods-name">{{item.title}}</view>
-							<view class="tui-goods-attr">{{item.propertyList | getProperty}}</view>
-						</view>
-						<view class="tui-price-right">
-							<view>￥{{item.price}}</view>
-							<view>x{{item.buyNum}}</view>
-						</view>
-					</view>
-				</tui-list-cell>
-			</block>
+			<t-order-item :order="order" type="detail"></t-order-item>
 		</view>
 		<view class="tui-order-info">
 			<view class="tui-order-content">
@@ -63,7 +49,7 @@
 				</view>
 				<view class="tui-img__box">
 					<block v-for="(img, index) in order.imgs" :key="index">
-						<image :src="img" mode="aspectFill"></image>
+						<image :src="img" mode="widthFill"></image>
 					</block>
 				</view>
 			</view>
@@ -73,7 +59,11 @@
 
 <script>
 import utils from "@/utils/util.js"
+import tOrderItem from '@/components/views/t-order-item/t-order-item'
 export default {
+	components: {
+		tOrderItem
+	},
 	data() {
 		return {
 			webURL: 'https://system.chuangbiying.com/static/images/mall/order/',
@@ -83,8 +73,8 @@ export default {
 			show: false
 		};
 	},
-	onLoad(){
-		this.order = this.$store.state.targetOrder
+	onLoad(options){
+		this.order = this.order = JSON.parse(decodeURIComponent(options.order))
 	},
    	filters: {
 		getPrice(price) {
@@ -194,60 +184,6 @@ export default {
 	justify-content: space-between;
 }
 
-.tui-goods-item {
-	width: 100%;
-	padding: 20rpx 30rpx;
-	box-sizing: border-box;
-	display: flex;
-	justify-content: space-between;
-}
-
-.tui-goods-img {
-	width: 180rpx;
-	height: 180rpx;
-	display: block;
-	flex-shrink: 0;
-}
-
-.tui-goods-center {
-	flex: 1;
-	padding: 20rpx 8rpx;
-	box-sizing: border-box;
-}
-
-.tui-goods-name {
-	width: 90%;
-	word-break: break-all;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-	font-size: 26rpx;
-	line-height: 32rpx;
-}
-
-.tui-goods-attr {
-	font-size: 22rpx;
-	color: #888888;
-	line-height: 32rpx;
-	padding-top: 20rpx;
-	word-break: break-all;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-}
-
-.tui-price-right {
-	text-align: right;
-	font-size: 24rpx;
-	color: #888888;
-	line-height: 30rpx;
-	padding-top: 20rpx;
-}
-
 .tui-order-title {
 	position: relative;
 	font-size: 28rpx;
@@ -283,54 +219,44 @@ export default {
 	color: #666;
 	line-height: 32rpx;
 }
-.tui-contact {
+
+
+.tui-content__box {
+	width: 100%;
+	background: #fff;
+	padding: 20rpx 30rpx;
+	box-sizing: border-box;
+}
+
+.tui-rate__box {
+	width: 100%;
 	display: flex;
+	justify-content: space-between;
 	align-items: center;
-	justify-content: center;
+	font-size: 24rpx;
+	color: #999;
+	padding: 12rpx 0 20rpx;
+}
+
+.tui-desc {
+	font-size: 24rpx;
+	color: #666;
+	text-indent: 2em;
 	font-size: 28rpx;
-}
-.tui-contact image {
-	width: 36rpx;
-	height: 36rpx;
-	margin-right: 16rpx;
+	word-break: break-all;
+	text-align: justify;
 }
 
-	.tui-content__box {
-		width: 100%;
-		background: #fff;
-		padding: 20rpx 30rpx;
-		box-sizing: border-box;
-	}
+.tui-img__box {
+	width: 100%;
+	font-size: 0;
+	padding-top: 4rpx;
+}
 
-	.tui-rate__box {
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		font-size: 24rpx;
-		color: #999;
-		padding: 12rpx 0 20rpx;
-	}
-
-	.tui-desc {
-		font-size: 24rpx;
-    	color: #666;
-		text-indent: 2em;
-		font-size: 28rpx;
-		word-break: break-all;
-		text-align: justify;
-	}
-
-	.tui-img__box {
-		width: 100%;
-		font-size: 0;
-		padding-top: 4rpx;
-	}
-
-	.tui-img__box image {
-		width: 200rpx;
-		height: 200rpx;
-		margin-right: 12rpx;
-		margin-top: 12rpx;
-	}
+.tui-img__box image {
+	width: 200rpx;
+	height: 200rpx;
+	margin-right: 12rpx;
+	margin-top: 12rpx;
+}
 </style>

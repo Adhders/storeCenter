@@ -94,9 +94,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
-  onLaunch: function onLaunch() {
+  onLaunch: function onLaunch() {var _this = this;
     var that = this;
 
     if (wx.canIUse('getUpdateManager')) {
@@ -118,13 +118,54 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       });
     }
 
+    this.calcNavBarInfo();
+    var pid = uni.getStorageSync("pid");
+    if (pid) {
+      var _pid = uni.getStorageSync("pid");
+      var url = '/defaultStore/' + _pid;
+      this.tui.request(url).then(function (res) {
+        if (res.code == '0') {
+          _this.$store.commit('login', true);
+          _this.$store.commit('setStoreInfo', res.default_store);
+        }
+      });
+    }
   },
-  onShow: function onShow() {
+  globalData: {
+    //全局数据管理
+    windowWidth: 390,
+    navBarHeight: 44, // 导航栏高度
+    menuBottom: 0, // 胶囊距底部间距（顶部间距也是这个）
+    menuTop: 0, // 胶囊距手机的顶部距离
+    menuHeight: 0, // 胶囊高度
+    menuWidth: 0, // 胶囊宽度
+    appid: '' },
 
-  },
-  onHide: function onHide() {
-    //console.log('App Hide')
-  },
+  methods: {
+    calcNavBarInfo: function calcNavBarInfo() {
+      // 获取系统信息
+      var systemInfo = uni.getSystemInfoSync();
+      // console.log('systemInfo', systemInfo)
+      this.globalData.windowWidth = systemInfo.windowWidth;
+      // 胶囊按钮位置信息
+      var menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+      // console.log('menuButtonInfo', menuButtonInfo)
+      // 导航栏高度 = 状态栏到胶囊的间距（胶囊上坐标位置-状态栏高度） * 2 + 胶囊高度 + 状态栏高度
+      this.globalData.navBarHeight = (menuButtonInfo.top - systemInfo.statusBarHeight) * 2 + menuButtonInfo.
+      height + systemInfo.statusBarHeight;
+      // console.log(menuButtonInfo, this.globalData.navBarHeight)
+      // 状态栏和菜单按钮(标题栏)之间的间距
+      // 等同于菜单按钮(标题栏)到正文之间的间距（胶囊上坐标位置-状态栏高度）
+      this.globalData.menuBottom = menuButtonInfo.top - systemInfo.statusBarHeight;
+      this.globalData.menuTop = menuButtonInfo.top;
+      this.globalData.menuWidth = menuButtonInfo.width;
+      // 菜单按钮栏(标题栏)的高度
+      this.globalData.menuHeight = menuButtonInfo.height;
+      // console.log('navBarHeight', this.globalData.navBarHeight, 'menuTop', this.globalData.menuTop, 'menuHeight',
+      // 	this.globalData.menuHeight)
+    } },
+
+
   onError: function onError(err) {
     //全局错误监听
 
@@ -135,6 +176,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
   } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 9 */

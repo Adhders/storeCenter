@@ -2,8 +2,9 @@
 	"pages": [{
 			"path": "pages/tabbar/index/index",
 			"style": {
-				"navigationBarTitleText": "商户助手",
+				"navigationBarTitleText": "",
 				"enablePullDownRefresh": true,
+				"navigationStyle": "custom",
 				"app-plus": {
 					"bounce": "vertical"
 				}
@@ -43,7 +44,78 @@
 					"titlePenetrate":"YES"
 				}
 			}
+		},{
+			"path": "pages/login/login/login",
+			"style": {
+				// #ifndef MP
+				"titleNView": false,
+				// #endif
+				// #ifdef MP
+				"navigationBarTitleText": "",
+				// #endif
+				"navigationStyle": "custom",
+				"mp-alipay": {
+					"allowsBounceVertical": "YES",
+					"transparentTitle": "always",
+					"titlePenetrate": "YES"
+				},
+				"backgroundColorBottom": "#FFFFFF"
+			}
 		}, {
+			"path": "pages/login/reg/reg",
+			"style": {
+				// #ifndef MP
+				"titleNView": false,
+				// #endif
+				// #ifdef MP
+				"navigationBarTitleText": "",
+				// #endif
+				"navigationStyle": "custom",
+				"mp-alipay": {
+					"allowsBounceVertical": "YES",
+					"transparentTitle": "always",
+					"titlePenetrate": "YES"
+				},
+				"backgroundColorBottom": "#FFFFFF"
+			}
+	
+		}, {
+			"path": "pages/login/login-pwd/login-pwd",
+			"style": {
+				// #ifndef MP
+				"titleNView": false,
+				// #endif
+				// #ifdef MP
+				"navigationBarTitleText": "",
+				// #endif
+				"navigationStyle": "custom",
+				"mp-alipay": {
+					"allowsBounceVertical": "YES",
+					"transparentTitle": "always",
+					"titlePenetrate": "YES"
+				},
+				"backgroundColorBottom": "#FFFFFF"
+			}
+	
+		}, {
+			"path": "pages/login/reset-pwd/reset-pwd",
+			"style": {
+				// #ifndef MP
+				"titleNView": false,
+				// #endif
+				// #ifdef MP
+				"navigationBarTitleText": "",
+				// #endif
+				"navigationStyle": "custom",
+				"mp-alipay": {
+					"allowsBounceVertical": "YES",
+					"transparentTitle": "always",
+					"titlePenetrate": "YES"
+				},
+				"backgroundColorBottom": "#FFFFFF"
+			}
+	
+		},{
 			"path": "pages/index/customerRefundOrder/customerRefundOrder",
 			"style": {
 				"navigationBarTitleText": "用户退款订单",
@@ -97,7 +169,6 @@
 				"backgroundColorBottom": "#F7F7F7",
 				"navigationBarTitleText": "商品列表 ",
 				"onReachBottomDistance": 50,
-				"navigationStyle": "custom",
 				"app-plus": {
 					"titleNView": false,
 					"bounce": "vertical"
@@ -107,8 +178,17 @@
 					"titlePenetrate":"YES"
 				}
 			}
-
 		}, {
+			"path": "pages/index/product/product",
+			"style": {
+				"navigationBarTitleText": "",
+				"backgroundColorTop": "#fff",
+				"backgroundColorBottom": "#fff",
+				"app-plus": {
+					"bounce": "vertical"
+				}
+			}
+		},{
 			"path": "pages/common/search/search",
 			"style": {
 				"navigationBarTitleText": "搜索",
@@ -118,7 +198,6 @@
 					"bounce": "vertical"
 				}
 			}
-
 		}, {
 			"path": "pages/my/userInfo/userInfo",
 			"style": {
@@ -177,16 +256,7 @@
 				}
 			}
 
-		}, {
-			"path": "pages/my/address/address",
-			"style": {
-				"navigationBarTitleText": "地址",
-				"app-plus": {
-					"bounce": "vertical"
-				}
-			}
-
-		}, {
+		},  {
 			"path": "pages/order/invoice/invoice",
 			"style": {
 				"navigationBarTitleText": "开具发票",
@@ -243,16 +313,7 @@
 				}
 			}
 
-		}, {
-			"path": "pages/my/editAddress/editAddress",
-			"style": {
-				"navigationBarTitleText": "新增地址",
-				"app-plus": {
-					"bounce": "vertical"
-				}
-			}
-
-		}, {
+		},{
 			"path": "pages/my/notice/notice",
 			"style": {
 				"navigationBarTitleText": "消息提醒设置",

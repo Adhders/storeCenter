@@ -1,4 +1,30 @@
 
+.tui-header-center {
+	position: absolute;
+	width: 100%;
+	height: 128rpx;
+	left: 0;
+	top: 160rpx;
+	padding: 0 30rpx;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+}
+.tui-avatar {
+	flex-shrink: 0;
+	width: 100rpx;
+	height: 100rpx;
+	border-radius: 50%;
+	display: block;
+}
+.tui-store-info {
+	margin-left: 10rpx;
+	color: #fff;
+}
+.tui-flex-center {
+	color: #f5bfbf;
+	font-size: 24rpx;
+}
 .tui-set-box {
 	display: flex;
 	align-items: center;
@@ -56,93 +82,6 @@
 	position: relative;
 	top: -40rpx;
 	display: block;
-}
-.tui-header-center {
-	position: absolute;
-	width: 100%;
-	height: 128rpx;
-	left: 0;
-	top: 120rpx;
-	padding: 0 30rpx;
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-}
-.tui-avatar {
-	flex-shrink: 0;
-	width: 128rpx;
-	height: 128rpx;
-	border-radius: 50%;
-	display: block;
-}
-.tui-info {
-	width: 60%;
-	padding-left: 30rpx;
-}
-.tui-login {
-	width: 60%;
-	padding-left: 30rpx;
-	font-size: 32rpx;
-	line-height: 32rpx;
-	color: #fff;
-	display: flex;
-	align-items: center;
-}
-.tui-nickname {
-	font-size: 30rpx;
-	font-weight: 500;
-	color: #fff;
-	display: flex;
-	align-items: center;
-}
-.tui-img-vip {
-	width: 56rpx;
-	height: 24rpx;
-	margin-left: 18rpx;
-}
-.tui-explain {
-	width: 80%;
-	font-size: 24rpx;
-	font-weight: 400;
-	color: #fff;
-	opacity: 0.75;
-	padding-top: 8rpx;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-.tui-btn-edit {
-	flex-shrink: 0;
-	padding-right: 22rpx;
-}
-.tui-header-btm {
-	width: 100%;
-	padding: 0 30rpx;
-	box-sizing: border-box;
-	position: absolute;
-	left: 0;
-	top: 280rpx;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	color: #fff;
-}
-.tui-btm-item {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-.tui-btm-num {
-	font-size: 32rpx;
-	font-weight: 600;
-	position: relative;
-}
-.tui-btm-text {
-	font-size: 24rpx;
-	opacity: 0.85;
-	padding-top: 4rpx;
 }
 .tui-content-box {
 	width: 100%;

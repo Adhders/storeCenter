@@ -24,15 +24,16 @@
 					官方客服
 				</view>
 			</tui-list-cell>
-			<!-- <tui-list-cell padding="0" :lineLeft="false" :arrow="true" @click="href(5)">
+			<tui-list-cell padding="0" :lineLeft="false" :arrow="true" @click="href(5)">
 				<view class="tui-list-cell">
 					意见反馈
 				</view>
-			</tui-list-cell> -->
+			</tui-list-cell>
 		</view>
 
 		<view class="tui-exit">
-			<tui-button shape="circle" shadow type="danger" height="88rpx">退出登录</tui-button>
+			<tui-button shape="circle" shadow type="danger" height="88rpx" @tap="logout" v-if="isLogin">退出登录</tui-button>
+			<tui-button shape="circle" shadow type="danger" height="88rpx" @tap="login" v-else>登录</tui-button>
 		</view>
 	</view>
 </template>
@@ -48,13 +49,20 @@
 			storeInfo() {
 				return this.$store.state.storeInfo
 			},
+			isLogin(){
+				return this.$store.state.isLogin
+			}
+		},
+		onLoad(){
+			console.log('storeInfo', this.storeInfo)
+			// let pid = uni.getStorageSync("pid")
 		},
 		methods: {
 			href(page) {
 				let url = "";
 				switch (page) {
 					case 1:
-						url = "/pages/my/userInfo/userInfo"
+						url = "/pages/my/storeInfo/storeInfo"
 						break;
 					case 2:
 						url = "/pages/my/address/address"
@@ -74,6 +82,15 @@
 				uni.navigateTo({
 					url: url
 				})
+			},
+			login(){
+				this.tui.href('/pages/login/login/login')
+			},
+			logout(){ 
+				uni.removeStorageSync('pid')
+				uni.removeStorageSync('token')
+				this.$store.commit('login', false)
+				this.tui.href('/pages/login/login/login')
 			}
 		}
 	}

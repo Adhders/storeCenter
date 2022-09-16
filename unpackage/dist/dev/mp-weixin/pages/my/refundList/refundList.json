@@ -7,6 +7,6 @@
     "tui-button": "/components/thorui/tui-button/tui-button",
     "tui-no-data": "/components/thorui/tui-no-data/tui-no-data",
     "tui-modal": "/components/thorui/tui-modal/tui-modal",
-    "tui-divider": "/components/thorui/tui-divider/tui-divider"
+    "t-order-item": "/components/views/t-order-item/t-order-item"
   }
 }

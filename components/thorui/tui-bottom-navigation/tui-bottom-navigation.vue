@@ -181,8 +181,10 @@ export default {
 		},
 		handleClose() {
 			this.showMenuIndex = -1;
+			console.log('close')
 		},
 		menuClick(index, parameter, type) {
+			console.log('menuClick')
 			//type：1-选中切换，2-跳转、请求、其他操作，3-菜单
 			if (type == 3) {
 				this.showMenuIndex = this.showMenuIndex == index ? -1 : index;

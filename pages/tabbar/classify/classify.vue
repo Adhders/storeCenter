@@ -1,63 +1,61 @@
 <template>
-	<view class="container">
-		<view class="tui-box tui-tool-box">
-			<tui-list-cell :arrow="true" padding="0" :lineLeft="false">
-				<view class="tui-cell-header">
-					<view class="tui-cell-title">常用工具</view>
-					<view class="tui-cell-sub">查看更多</view>
-				</view>
-			</tui-list-cell>
-			<view class="tui-order-list tui-flex-wrap">
-				<view class="tui-tool-item" @tap="href(1)">
-					<view class="tui-icon-box">
-						<image src="/static/images/mall/my/icon_user.png" class="tui-tool-icon"></image>
-					
-					</view>
-					<view class="tui-tool-text">用户管理</view>
-				</view>
-				<view class="tui-tool-item" @tap="href(2)">
-					<view class="tui-icon-box">
-						<image src="/static/images/mall/my/icon_goods.png" class="tui-tool-icon"></image>
-					</view>
-					<view class="tui-tool-text">商品</view>
-				</view>
-				<view class="tui-tool-item">
-					<view class="tui-icon-box">
-						<image src="/static/images/mall/my/icon_data.png" class="tui-tool-icon"></image>
-					</view>
-					<view class="tui-tool-text">数据</view>
-				</view>
-				<view class="tui-tool-item">
-					<view class="tui-icon-box">
-						<image src="/static/images/mall/my/icon_logistics.png" class="tui-tool-icon"></image>
-					</view>
-					<view class="tui-tool-text">配送管理</view>
-				</view>
-				<view class="tui-tool-item">
-					<view class="tui-icon-box">
-						<image src="/static/images/mall/my/icon_kefu_3x.png" class="tui-tool-icon"></image>
-					</view>
-					<view class="tui-tool-text">官方客服</view>
-				</view>
-				<view class="tui-tool-item" @tap="href(11)">
-					<view class="tui-icon-box">
-						<image src="/static/images/mall/my/icon_address.png" class="tui-tool-icon"></image>
-					</view>
-					<view class="tui-tool-text">地址</view>
-				</view>
-				<!-- <view class="tui-tool-item" @tap="href(11)">
-					<view class="tui-icon-box">
-						<image src="/static/images/mall/my/icon_printer.png" class="tui-tool-icon"></image>
-					</view>
-					<view class="tui-tool-text">打印机</view>
-				</view> -->
-				<!-- <view class="tui-tool-item">
-					<view class="tui-icon-box">
-						<image src="/static/images/mall/my/icon_kaipiao_3x.png" class="tui-tool-icon"></image>
-					</view>
-					<view class="tui-tool-text">开发票</view>
-				</view> -->
+	<view class="tui-box tui-tool-box">
+		<tui-list-cell :arrow="true" padding="0" :lineLeft="false">
+			<view class="tui-cell-header">
+				<view class="tui-cell-title">常用工具</view>
+				<view class="tui-cell-sub">查看更多</view>
 			</view>
+		</tui-list-cell>
+		<view class="tui-order-list tui-flex-wrap">
+			<view class="tui-tool-item" @tap="href('user')">
+				<view class="tui-icon-box">
+					<image src="/static/images/mall/my/icon_user.png" class="tui-tool-icon"></image>
+				
+				</view>
+				<view class="tui-tool-text">用户管理</view>
+			</view>
+			<view class="tui-tool-item" @tap="href('goods')">
+				<view class="tui-icon-box">
+					<image src="/static/images/mall/my/icon_goods.png" class="tui-tool-icon"></image>
+				</view>
+				<view class="tui-tool-text">商品</view>
+			</view>
+			<view class="tui-tool-item">
+				<view class="tui-icon-box">
+					<image src="/static/images/mall/my/icon_data.png" class="tui-tool-icon"></image>
+				</view>
+				<view class="tui-tool-text">数据</view>
+			</view>
+			<view class="tui-tool-item">
+				<view class="tui-icon-box">
+					<image src="/static/images/mall/my/icon_logistics.png" class="tui-tool-icon"></image>
+				</view>
+				<view class="tui-tool-text">配送管理</view>
+			</view>
+			<view class="tui-tool-item">
+				<view class="tui-icon-box">
+					<image src="/static/images/mall/my/icon_kefu_3x.png" class="tui-tool-icon"></image>
+				</view>
+				<view class="tui-tool-text">官方客服</view>
+			</view>
+			<view class="tui-tool-item">
+				<view class="tui-icon-box">
+					<image src="/static/images/mall/my/icon_address.png" class="tui-tool-icon"></image>
+				</view>
+				<view class="tui-tool-text">地址</view>
+			</view>
+			<!-- <view class="tui-tool-item" @tap="href(11)">
+				<view class="tui-icon-box">
+					<image src="/static/images/mall/my/icon_printer.png" class="tui-tool-icon"></image>
+				</view>
+				<view class="tui-tool-text">打印机</view>
+			</view> -->
+			<!-- <view class="tui-tool-item">
+				<view class="tui-icon-box">
+					<image src="/static/images/mall/my/icon_kaipiao_3x.png" class="tui-tool-icon"></image>
+				</view>
+				<view class="tui-tool-text">开发票</view>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -77,10 +75,10 @@ export default {
 			console.log('goto', num)
 			let url = ''
 			switch(num){
-				case 1:
+				case 'user':
 					url = '/pages/index/customerList/customerList'
 					break;
-				case 2:
+				case 'goods':
 					url = '/pages/index/productList/productList'
 					break;
 				case 3:

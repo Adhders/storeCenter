@@ -16,21 +16,7 @@
 						<view class="tui-order-status" v-else>{{order.status}}</view>
 					</view>
 				</tui-list-cell>
-				<block v-for="(item,index) in order.goodsList" :key="index">
-					<tui-list-cell padding="0" :hover="false"  @tap="detail(order)">
-						<view class="tui-goods-item">
-								<image :src=item.defaultImageUrl class="tui-goods-img"></image>
-								<view class="tui-goods-center">
-									<view class="tui-goods-name">{{item.title}}</view>
-									<view class="tui-goods-attr">{{item.propertyList | getProperty}}</view>
-								</view>
-								<view class="tui-price-right">
-									<view>￥{{item.price}}</view>
-									<view>x{{item.buyNum}}</view>
-								</view>
-							</view>
-					</tui-list-cell>
-				</block>
+				<t-order-item :order="order"></t-order-item>
 				<tui-list-cell :hover="false" unlined>
 					<view class="tui-goods-price" v-if="order.status==='退款成功'">
 						<view style="margin-left: 10px">已退款：</view>
@@ -61,16 +47,20 @@
 				您还没有相关的订单</tui-no-data>
 			<tui-modal :show="isDelete" @click="onRemove"  title="确定删除售后单？" content="删除之后此售后单将无法恢复，请慎重考虑？"></tui-modal>	
 		</view>
-		<tui-divider width="60%" gradual>没有更多了</tui-divider>
+		<!-- <tui-divider width="60%" gradual>没有更多了</tui-divider> -->
 	</view>
 </template>
 
 <script>
 import utils from "@/utils/util.js"
+import tOrderItem from '@/components/views/t-order-item/t-order-item'
 export default {
+	components: {
+		tOrderItem
+	},
 	data() {
 		return {
-			tabs: [{name: "待受理"}, {name: "申请记录"}],
+			tabs: [{name: "待受理"}, {name: "处理中"}, {name: "申请记录"}],
 			scrollTop: 0,
 			currentTab: 0,
 			selectedOrder: null,
@@ -81,8 +71,10 @@ export default {
 		};
 	},
     onLoad(option){
-		let url = '/getStoreRefundOrder/' + this.$store.state.appid
-		this.tui.request(url,'GET', undefined, true).then((res)=>{
+		this.pid = uni.getStorageSync("pid")
+		this.store_id = uni.getStorageSync("store_id")
+		let url = '/getStoreAllRefundOrder/' + this.pid + '/' + this.store_id
+		this.tui.request(url).then((res)=>{
 			this.loadding = false
 			this.$store.commit('setRefundList', res.refundList)
 			this.switchTab(this.currentTab)
@@ -124,6 +116,10 @@ export default {
 					break;
 				}
 				case 1: {
+					this.displayList = []
+					break;
+				}
+				case 2: {
 					this.displayList = this.refundList
 					break;
 				}
@@ -131,23 +127,20 @@ export default {
 		},
 		detail(order) {
 			if(order.refundNum){
-				this.$store.commit('setTargetOrder', order)
-		  		this.tui.href('/pages/my/refundDetail/refundDetail')
+		  		this.tui.href('/pages/my/refundDetail/refundDetail?order=' + encodeURIComponent(JSON.stringify(order)))
 			}
 		},
 		onDeal(order){
-			let amount = {'refund': 1, 'total': 1, 'currency': 'CNY'}
-			let url = '/refund_miniProg/' + order.orderNum + '/' + order.refundNum
-			this.tui.request(url, 'POST', amount).then((res)=>{
+			let url = '/refund_miniProg/'  + this.pid + '/' + this.store_id 
+			this.tui.request(url, 'POST',
+				{ amount: {'refund': parseInt(order.refund_fee*100), 'total': parseInt(order.netCost*100), 'currency':'CNY' }, 
+				refundNum: order.refundNum, orderNum: order.orderNum}).then((res)=>{
 				if(res.code==200){
 					this.tui.toast("退款成功")
-					url = '/updateRefundOrders/' + order.refundNum
-					this.tui.request(url, 'PUT' , {status: '退款成功'}).then((res)=>{
-						this.$store.state.storeState.refundNum-=1
-						let index= this.refundList.findIndex((o) => { return o.refundNum == order.refundNum})
-						this.refundList[index].status="退款成功"
-						this.switchTab(this.currentTab)
-					})  
+					this.$store.state.storeState.refundNum-=1
+					let index= this.refundList.findIndex((o) => { return o.refundNum == order.refundNum})
+					this.refundList[index].status="退款成功"
+					this.switchTab(this.currentTab)
 				}
 				else {
 					this.tui.toast(res.message)
@@ -229,39 +222,6 @@ export default {
 	height: 60rpx;
 	border-radius: 50%;
 	display: block;
-}
-
-.tui-goods-name {
-	width: 90%;
-	word-break: break-all;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-	font-size: 26rpx;
-	line-height: 32rpx;
-}
-
-.tui-goods-attr {
-	font-size: 22rpx;
-	color: #888888;
-	line-height: 32rpx;
-	padding-top: 20rpx;
-	word-break: break-all;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-}
-
-.tui-price-right {
-	text-align: right;
-	font-size: 24rpx;
-	color: #888888;
-	line-height: 30rpx;
-	padding-top: 20rpx;
 }
 
 .tui-goods-price {

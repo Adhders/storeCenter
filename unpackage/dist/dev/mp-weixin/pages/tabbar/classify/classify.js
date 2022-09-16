@@ -96,7 +96,7 @@ var components
 try {
   components = {
     tuiListCell: function() {
-      return __webpack_require__.e(/*! import() | components/thorui/tui-list-cell/tui-list-cell */ "components/thorui/tui-list-cell/tui-list-cell").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-list-cell/tui-list-cell.vue */ 275))
+      return __webpack_require__.e(/*! import() | components/thorui/tui-list-cell/tui-list-cell */ "components/thorui/tui-list-cell/tui-list-cell").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-list-cell/tui-list-cell.vue */ 296))
     }
   }
 } catch (e) {
@@ -215,8 +215,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 var _default =
 {
   data: function data() {
@@ -232,10 +230,10 @@ var _default =
       console.log('goto', num);
       var url = '';
       switch (num) {
-        case 1:
+        case 'user':
           url = '/pages/index/customerList/customerList';
           break;
-        case 2:
+        case 'goods':
           url = '/pages/index/productList/productList';
           break;
         case 3:

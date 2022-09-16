@@ -14,7 +14,8 @@
 		</tui-list-cell>
 		<tui-list-cell :hover="false">
 			<view class="tui-img__title">添加图片</view>
-			<tui-upload></tui-upload>
+			<tui-upload
+			></tui-upload>
 		</tui-list-cell>
 		<view class="tui-check__box">
 			<checkbox-group>

@@ -14,21 +14,12 @@
 				<image :src="getImg(status)" class="tui-status-img" mode="widthFix"></image>
 			</view>
 		</view>
-<!--		<tui-list-cell arrow backgroundColor="#fefefe" @click="logistics">-->
-<!--			<view class="tui-flex-box">-->
-<!--				<image :src="webURL+'img_order_logistics3x.png'" class="tui-icon-img"></image>-->
-<!--				<view class="tui-logistics">-->
-<!--					<view class="tui-logistics-text">快递已到收货点，请注意查收哦! 投递员: echo. 联系电话: 17788849992</view>-->
-<!--					<view class="tui-logistics-time">2019-06-03 12:02</view>-->
-<!--				</view>-->
-<!--			</view>-->
-<!--		</tui-list-cell>-->
 		<tui-list-cell unlined :hover="false">
 			<view class="tui-flex-box">
 				<image :src="webURL+'img_order_address3x.png'" class="tui-icon-img"></image>
 				<view class="tui-addr">
-					<view class="tui-addr-userinfo">{{address.userName}}<text class="tui-addr-tel">{{address.telNumber | formatNumber}}</text></view>
-					<view class="tui-addr-text">{{ address.provinceName + address.cityName + address.countyName + address.detailInfo  }}</view>
+					<view class="tui-addr-userinfo">{{order.address.userName}}<text class="tui-addr-tel">{{order.address.telNumber | formatNumber}}</text></view>
+					<view class="tui-addr-text">{{ order.address.location + order.address.detailInfo  }}</view>
 				</view>
 			</view>
 		</tui-list-cell>
@@ -39,21 +30,7 @@
 					商品信息
 				</view>
 			</tui-list-cell>
-			<block v-for="(item,index) in order.goodsList" :key="index">
-				<tui-list-cell padding="0">
-					<view class="tui-goods-item">
-						<image :src="item.defaultImageUrl" class="tui-goods-img"></image>
-						<view class="tui-goods-center">
-							<view class="tui-goods-name">{{item.title}}</view>
-							<view class="tui-goods-attr">{{item.propertyList | getProperty}}</view>
-						</view>
-						<view class="tui-price-right">
-							<view>￥{{item.price}}</view>
-							<view>x{{item.buyNum}}</view>
-						</view>
-					</view>
-				</tui-list-cell>
-			</block>
+			<t-order-item :order="order" type="detail"></t-order-item>
 			<view class="tui-goods-info">
 				<view class="tui-price-flex tui-size24">
 					<view>商品总额</view>
@@ -63,22 +40,22 @@
 					<view>优惠券</view>
 					<view style="display: inline-flex">
 						<view class="tui-symbol">-</view>
-						<view>￥{{order.discount.toFixed(2)}}</view>
+						<view>￥{{order.discount}}</view>
 					</view>
 				</view>
 				<view class="tui-price-flex  tui-size24">
 					<view>配送费</view>
 					<view style="display: inline-flex">
 						<view class="tui-symbol">+</view>
-						<view>￥{{order.shipping_fee.toFixed(2)}}</view>
+						<view>￥{{order.shipping_fee}}</view>
 					</view>
 				</view>
 				<view class="tui-size32">
 					<view class="tui-goods-price tui-primary-color">
 						<view class="tui-black">实付款<text class="tui-colon">:</text></view>
 						<view class="tui-size-24">￥</view>
-						<view class="tui-price-large">{{order.netCost.toFixed(2).split('.')[0]}}</view>
-						<view class="tui-size-24">{{order.netCost.toFixed(2).split('.')[1]}}</view>
+						<view class="tui-price-large">{{order.netCost.split('.')[0]}}</view>
+						<view class="tui-size-24">.{{order.netCost.split('.')[1]}}</view>
 					</view>
 				</view>
 			</view>
@@ -119,16 +96,15 @@
 				<tui-button type="danger" plain width="152rpx" height="56rpx" :size="26" shape="circle" @click="delivery(order)">发货</tui-button>
 			</view>
 		</view>
-		<t-pay-way :show="show" @close="popupClose"></t-pay-way>
 	</view>
 </template>
 
 <script>
 	import utils from "@/utils/util.js"
-	import tPayWay from "@/components/views/t-pay-way/t-pay-way"
+	import tOrderItem from '@/components/views/t-order-item/t-order-item'
 	export default {
 		components: {
-			tPayWay
+			tOrderItem
 		},
 		data() {
 			return {
@@ -146,17 +122,18 @@
 				},
 				order: {
 					note: '',
-					discount: 0.00,
-					totalCost: 0.00,
-					netCost: 0.00,
-					shipping_fee: 0.00,
-					goodsList: []
+					discount: '0.00',
+					totalCost: '0.00',
+					netCost:  '0.00',
+					shipping_fee: '0.00',
+					goodsList: [],
+					address: {'telNumber': ''}
 				},
 			}
 		},
-		onLoad(option){
-			this.order = this.$store.state.targetOrder
-			
+		onLoad(options){
+			this.order = JSON.parse(decodeURIComponent(options.order))
+			console.log('order', this.order)
 			this.status = this.getStatus(this.order.status)
 			this.address = this.order.address
 		},
@@ -184,27 +161,38 @@
 			getStatus: function(status){
 				const statusList = [
 					{status: '待支付'}, {status: '待发货'}, {status: '待收货'},
-					{status: '待评价'}, {status: '交易完成'}, {status: '交易关闭'}
+					{status: '待评价'}, {status: '交易成功'}, {status: '交易关闭'},
+					{status: '处理中'}, {status: '退款成功'}, {status: '拼团中'}, {status: '拼团失败，已退款'}
 				]
-				return statusList.findIndex((o)=>{
-					return o.status===status})
+				return statusList.findIndex((o)=>{return o.status===status})
 			},
 			getTime(time){
+				time = time.replace(/-/g, "/") //如果不转化，在ios设备上会计算错误
 				const expireTime = 24*60*60*1000 //一天后过期
 				let t1 = Date.parse(new Date(time)) + expireTime
 				let t2 = Date.parse(new Date())
 				return (t1-t2)/1000
 			},
+			onCall: function() {
+				// #ifdef MP-WEIXIN
+				wx.makePhoneCall({
+					phoneNumber: this.phone
+				})
+				// #endif
+			},
 			getImg: function(status) {
 				return this.webURL + ["img_order_payment3x.png", "img_order_send3x.png", "img_order_received3x.png",
-					"img_order_signed3x.png", "img_order_signed3x.png",  "img_order_closed3x.png"
+					"img_order_signed3x.png", "img_order_signed3x.png",  "img_order_closed3x.png", "img_waiting.png", "img_success3x.png",
+					// 拼团订单
+					"img_waiting.png", "img_success3x.png"
 				][status]
 			},
 			getStatusText: function(status) {
-				return ["等待顾客付款", "付款成功", "待收货", "待评价", "交易完成", "交易关闭"][status]
+				return ["等待您付款", "付款成功", "待收货", "待评价", "交易成功", "交易关闭", '处理中', "退款成功", "拼团订单", "拼团订单"][status]
 			},
 			getReason: function(status) {
-				return ["剩余时间", "请尽快发货", "还剩X天XX小时自动确认", "", "", "超时未付款，订单自动取消"][status]
+				return ["", "等待卖家发货", "还剩X天XX小时自动确认", "", "感谢购买我们的商品，欢迎下次再来!", "超时未付款，订单自动取消", "等待商家处理", "",
+				 '拼团中', '拼团失败，已退款'][status]
 			},
 			logistics() {
 				this.tui.href("/pages/my/logistics/logistics")
@@ -363,44 +351,6 @@
 		flex: 1;
 		padding: 20rpx 8rpx;
 		box-sizing: border-box;
-	}
-
-	.tui-goods-name {
-		width: 90%;
-		word-break: break-all;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		font-size: 26rpx;
-		line-height: 32rpx;
-	}
-
-	.tui-goods-attr {
-		font-size: 22rpx;
-		color: #888888;
-		line-height: 32rpx;
-		padding-top: 20rpx;
-		word-break: break-all;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-	}
-
-	.tui-price-right {
-		text-align: right;
-		font-size: 24rpx;
-		color: #888888;
-		line-height: 30rpx;
-		padding-top: 20rpx;
-	}
-
-	.tui-color-red {
-		color: #E41F19;
-		padding-right: 30rpx;
 	}
 	.tui-black {
 		color: #222;

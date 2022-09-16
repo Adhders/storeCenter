@@ -6,11 +6,8 @@
  const tui = {
 	 //接口地址
 	 interfaceUrl: function() {
-		 return 'http://192.168.1.40:8000'
-		 // return 'http://localhost:8000'
-		 // return 'https://www.thorui.cn'
-		 //return 'https://test.thorui.cn'
-		 //return 'https://uat.thorui.cn'
+		//  return 'http://192.168.0.112:8000'
+		 return 'https://chuangbiying.com/retail'
 	 },
 	 toast: function(text, duration, success) {
 		 uni.showToast({
@@ -114,6 +111,7 @@
 					 resolve(res.data)
 				 },
 				 fail: (res) => {
+					console.log('fail', res)
 					 clearTimeout(tui.delayed)
 					 tui.delayed = null;
 					 tui.toast("网络不给力，请稍后再试~")
@@ -180,7 +178,7 @@
 	 href(url, isVerify) {
 		 if (isVerify && !tui.isLogin()) {
 			 uni.navigateTo({
-				 url: '/pages/my/login/login'
+				 url: '/pages/login/login/login'
 			 })
 		 } else {
 			 uni.navigateTo({

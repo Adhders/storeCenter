@@ -3,18 +3,15 @@
 		<view class="tui-mybg-box">
 			<image :src="webURL + '/static/images/mall/my/img_bg_3x.png'" class="tui-my-bg" mode="widthFix"></image>
 			<view class="tui-header-center">
-				<image :src="storeInfo.trademark" class="tui-avatar" @tap="href(3)"></image>
-				<view class="tui-info" v-if="isLogin">
-					<view class="tui-nickname">
-						{{storeInfo.storename}}
+				<image :src="storeInfo.trademark" class="tui-avatar"></image>
+				<view class="tui-store-info">
+					<view>{{storeInfo.storename}}</view>
+					<view class="tui-flex-center">
+						<text>进店</text>
+						<tui-icon name="arrowright" :size="12" color="#f5bfbf"></tui-icon>
 					</view>
 				</view>
-				<view class="tui-login" v-if="!isLogin" @tap="login">
-					<text>登录/注册</text>
-					<tui-icon name="arrowright" color="#fff" :size="36" unit="rpx"></tui-icon>
-				</view>
 			</view>
-
 		</view>
 		<view class="tui-content-box">
 		    <view class="tui-box">
@@ -43,21 +40,21 @@
 				<view class="tui-order-list">
 					<view class="tui-order-item" @tap="href(4, 1)">
 						<view class="tui-icon-box">
-							<image src="/static/images/mall/my/icon_daifukuan_3x.png" class="tui-order-icon"></image>
+							<image src="https://system.chuangbiying.com/static/images/mall/my/icon_daifukuan_3x.png" class="tui-order-icon"></image>
 							<view class="tui-badge tui-badge-red" v-if="state.pendingPay>0">{{state.pendingPay}}</view>
 						</view>
 						<view class="tui-order-text">待付款</view>
 					</view>
 					<view class="tui-order-item" @tap="href(4, 2)">
 						<view class="tui-icon-box">
-							<image src="/static/images/mall/my/icon_daifahuo_3x.png" class="tui-order-icon"></image>
+							<image src="https://system.chuangbiying.com/static/images/mall/my/icon_daifahuo_3x.png" class="tui-order-icon"></image>
 							<view class="tui-badge tui-badge-red" v-if="state.pendingDelivery>0">{{state.pendingDelivery}}</view>
 						</view>
 						<view class="tui-order-text">待发货</view>
 					</view>
 					<view class="tui-order-item" @tap="href(5)">
 						<view class="tui-icon-box">
-							<image src="/static/images/mall/my/icon_tuikuan_3x.png" class="tui-order-icon"></image>
+							<image src="https://system.chuangbiying.com/static/images/mall/my/icon_tuikuan_3x.png" class="tui-order-icon"></image>
 							<view class="tui-badge tui-badge-red" v-if="state.refundOrder>0">{{state.refundOrder}}</view>
 						</view>
 						<view class="tui-order-text">售后</view>
@@ -85,13 +82,13 @@
 					</view>
 					<view class="tui-order-item" @tap="href(8)">
 						<view class="tui-assets-num">
-							<text  class="tui-text__large">{{uv}}</text>
+							<text  class="tui-text__large">{{visitData.visit_uv}}</text>
 						</view>
 						<view class="tui-assets-text">访客数</view>
 					</view>
 					<view class="tui-order-item">
 						<view class="tui-assets-num">
-							<text class="tui-text__large">{{pv}}</text>
+							<text class="tui-text__large">{{visitData.visit_pv}}</text>
 						</view>
 						<view class="tui-assets-text">浏览量</view>
 					</view>
@@ -99,29 +96,29 @@
 			</view>
 
 			<view class="tui-box tui-assets-box">
-				<tui-list-cell padding="0" unlined :lineLeft="false">
-					<view class="tui-cell-header">
+				<tui-list-cell padding="0" :arrow="true" :lineLeft="false">
+					<view class="tui-cell-header" @tap="href('goods')">
 						<view class="tui-cell-title">我的商品</view>
+						<view class="tui-cell-sub">查看更多</view>
 					</view>
 				</tui-list-cell>
 				<view class="tui-order-list tui-assets-list">
-					<view class="tui-order-item" @tap="href(6, 0)">
+					<view class="tui-order-item" @tap="href('goods', 0)">
 						<view class="tui-assets-num"><text  class="tui-text__large">{{state.onSales}}</text></view>
 						<view class="tui-assets-text">销售中</view>
 					</view>
-					<view class="tui-order-item" @tap="href(6, 1)">
+					<view class="tui-order-item" @tap="href('goods', 1)">
 						<view class="tui-assets-num"><text  class="tui-text__large">{{state.putAway}}</text></view>
 						<view class="tui-assets-text">待上架</view>
 					</view>
-					<view class="tui-order-item">
+					<view class="tui-order-item" @tap="onAdd">
 						<view class="tui-assets-num">
-							<tui-icon name="plus" :size="40" unit="rpx" color="#000" bold></tui-icon>
+							<tui-icon name="plus" :size="40" unit="rpx" color="#e12924" bold></tui-icon>
 						</view>
 						<view class="tui-assets-text">新增商品</view>
 					</view>
 				</view>
 			</view>
-
 			<!--加载loadding-->
 			<!-- <tui-loadmore v-if="loadding" :index="3" type="red"></tui-loadmore> -->
 		</view>
@@ -132,7 +129,6 @@
 	export default {
 		data() {
 			return {
-				isLogin: false,
 				webURL: 'https://www.thorui.cn/wx',
 				top: 0, //标题图标距离顶部距离
 				opacity: 0,
@@ -140,43 +136,20 @@
 				pageIndex: 1,
 				loadding: false,
 				pullUpOn: true,
-				pv: 0,
-				uv: 0,
-				content: ''
+				visitData: {visit_pv: 0, visit_uv: 0},
+				content: '',
+				pid: '',
+				store_id: ''
 			};
 		},
 		onLoad: function(options) {
-			let obj = {};
-			// #ifdef MP-WEIXIN
-			obj = wx.getMenuButtonBoundingClientRect();
-			// #endif
-			// #ifdef MP-BAIDU
-			obj = swan.getMenuButtonBoundingClientRect();
-			// #endif
-			// #ifdef MP-ALIPAY
-			my.hideAddToDesktopMenu();
-			// #endif
-			uni.getSystemInfo({
-				success: res => {
-					this.width = obj.left || res.windowWidth;
-					this.height = obj.top ? obj.top + obj.height + 8 : res.statusBarHeight + 44;
-					this.top = obj.top ? obj.top + (obj.height - 32) / 2 : res.statusBarHeight + 6;
-					this.scrollH = res.windowWidth * 0.6;
-				}
-			});
-			const appid = this.$store.state.appid
-			const secret = this.$store.state.secret
-			let url = "/getStoreStatic/" + appid + "/" + secret
-			let data = { "begin_date":20220315, "end_date":20220315}
-			this.tui.request(url,'POST', data, true).then((res)=>{
-				console.log('res', res.data.list)
-			})
-			url = "/getStoreInfo/" + appid
-			this.tui.request(url).then((res)=>{
-				console.log('res', res)
-				this.$store.commit('setStoreState', res.state)
-				this.$store.commit('setStoreInfo', res.storeInfo)
-			})
+			this.pid = uni.getStorageSync("pid")
+			this.store_id = uni.getStorageSync("store_id")
+			if(this.pid && this.store_id){
+				this.initial(this.pid, this.store_id)
+			}else{
+				uni.navigateTo({url: '/pages/login/login/login'})
+			}
 		},
 		computed: {
 			storeInfo() {
@@ -185,87 +158,81 @@
 			state() {
 				return this.$store.state.storeState
 			},
+			isLogin(){
+				return this.$store.state.isLogin
+			}
 		},
 		methods: {
+			initial(pid, store_id){
+				let url = "/getStoreStaticData/" + pid + '/' + store_id
+				this.tui.request(url).then((res)=>{
+					console.log('res', res)
+					this.$store.commit('setStoreState', res.state)
+					this.visitData = res.data[0]
+				})
+			},
+			menu(){
+				console.log('menu')
+			},
 			href(page, index) {
 				//未登录状态下应跳转至登录页面，此处未作处理
 				let url = '';
 				switch (page) {
-					case 2:
-						url = '/pages/my/set/set';
-						break;
-					case 3:
-						url = '/pages/my/storeInfo/storeInfo';
-						break;
 					case 4:
 						url = '/pages/my/myOrder/myOrder?currentTab=' + index;
 						break;
 					case 5:
 						url = '/pages/my/refundList/refundList';
 						break;
-					case 6:
+					case 'goods':
 						url = '/pages/index/productList/productList?currentTab=' + index 	
 					default:
 						break;
 				}
 				if (url) {
-					if (page == 3 && !this.isLogin) {
-						this.isLogin = true;
-						this.tui.toast('模拟登录成功~')
-					} else {
-						this.tui.href(url);
-					}
+					this.tui.href(url);
 				} else {
 					this.tui.toast('功能尚未完善~');
 				}
 			},
-			detail: function() {
-				uni.navigateTo({
-					url: '/pages/index/productDetail/productDetail'
-				});
-			},
-			initNavigation(e) {
-				this.opacity = e.opacity;
-				this.top = e.top;
-			},
-			opacityChange(e) {
-				this.opacity = e.opacity;
-			},
-			login() {
-				this.isLogin = true
-				this.tui.toast('模拟登录成功~')
+			onAdd(){
+				this.tui.href('/pages/index/product/product')
 			}
 		},
-		onPageScroll(e) {
-			this.scrollTop = e.scrollTop;
-		},
 		onPullDownRefresh() {
-			setTimeout(() => {
-				uni.stopPullDownRefresh();
-			}, 200);  
-		},
-		// onReachBottom: function() {
-		// 	if (!this.pullUpOn) return;
-		// 	this.loadding = true;
-		// 	if (this.pageIndex == 4) {
-		// 		this.loadding = false;
-		// 		this.pullUpOn = false;
-		// 	} else {
-		// 		let loadData = JSON.parse(JSON.stringify(this.productList));
-		// 		loadData = loadData.splice(0, 10);
-		// 		if (this.pageIndex == 1) {
-		// 			loadData = loadData.reverse();
-		// 		}
-		// 		this.productList = this.productList.concat(loadData);
-		// 		this.pageIndex = this.pageIndex + 1;
-		// 		this.loadding = false;
-		// 	}
-		// }
+			this.initial(this.pid, this.store_id)
+		}  
 	};
 </script>
 
 <style>
+	.tui-header-center {
+		position: absolute;
+		width: 100%;
+		height: 128rpx;
+		left: 0;
+		top: 160rpx;
+		padding: 0 30rpx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+	}
 
+	.tui-avatar {
+		flex-shrink: 0;
+		width: 100rpx;
+		height: 100rpx;
+		border-radius: 50%;
+		display: block;
+	}
+	.tui-store-info {
+		margin-left: 10rpx;
+		color: #fff;
+	}
+	.tui-flex-center {
+		color: #f5bfbf;
+		font-size: 24rpx;
+	}
 	/* #ifdef MP */
 	.tui-set-box {
 		display: flex;
@@ -332,106 +299,6 @@
 		top: -40rpx;
 		display: block;
 	}
-
-	.tui-header-center {
-		position: absolute;
-		width: 100%;
-		height: 128rpx;
-		left: 0;
-		top: 120rpx;
-		padding: 0 30rpx;
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-	}
-
-	.tui-avatar {
-		flex-shrink: 0;
-		width: 128rpx;
-		height: 128rpx;
-		border-radius: 50%;
-		display: block;
-	}
-
-	.tui-info {
-		width: 60%;
-		padding-left: 30rpx;
-	}
-
-	.tui-login {
-		width: 60%;
-		padding-left: 30rpx;
-		font-size: 32rpx;
-		line-height: 32rpx;
-		color: #fff;
-		display: flex;
-		align-items: center;
-	}
-
-	.tui-nickname {
-		font-size: 30rpx;
-		font-weight: 500;
-		color: #fff;
-		display: flex;
-		align-items: center;
-	}
-
-	.tui-img-vip {
-		width: 56rpx;
-		height: 24rpx;
-		margin-left: 18rpx;
-	}
-
-	.tui-explain {
-		width: 80%;
-		font-size: 24rpx;
-		font-weight: 400;
-		color: #fff;
-		opacity: 0.75;
-		padding-top: 8rpx;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-	.tui-btn-edit {
-		flex-shrink: 0;
-		padding-right: 22rpx;
-	}
-
-	.tui-header-btm {
-		width: 100%;
-		padding: 0 30rpx;
-		box-sizing: border-box;
-		position: absolute;
-		left: 0;
-		top: 280rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		color: #fff;
-	}
-
-	.tui-btm-item {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.tui-btm-num {
-		font-size: 32rpx;
-		font-weight: 600;
-		position: relative;
-	}
-
-	.tui-btm-text {
-		font-size: 24rpx;
-		opacity: 0.85;
-		padding-top: 4rpx;
-	}
-
 	.tui-content-box {
 		width: 100%;
 		padding: 0 30rpx;

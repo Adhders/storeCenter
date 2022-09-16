@@ -96,13 +96,16 @@ var components
 try {
   components = {
     tuiIcon: function() {
-      return Promise.all(/*! import() | components/thorui/tui-icon/tui-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/thorui/tui-icon/tui-icon")]).then(__webpack_require__.bind(null, /*! @/components/thorui/tui-icon/tui-icon.vue */ 267))
+      return Promise.all(/*! import() | components/thorui/tui-icon/tui-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/thorui/tui-icon/tui-icon")]).then(__webpack_require__.bind(null, /*! @/components/thorui/tui-icon/tui-icon.vue */ 288))
     },
     tuiListCell: function() {
-      return __webpack_require__.e(/*! import() | components/thorui/tui-list-cell/tui-list-cell */ "components/thorui/tui-list-cell/tui-list-cell").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-list-cell/tui-list-cell.vue */ 275))
+      return __webpack_require__.e(/*! import() | components/thorui/tui-list-cell/tui-list-cell */ "components/thorui/tui-list-cell/tui-list-cell").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-list-cell/tui-list-cell.vue */ 296))
     },
     tuiNoticeBar: function() {
-      return __webpack_require__.e(/*! import() | components/thorui/tui-notice-bar/tui-notice-bar */ "components/thorui/tui-notice-bar/tui-notice-bar").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-notice-bar/tui-notice-bar.vue */ 282))
+      return __webpack_require__.e(/*! import() | components/thorui/tui-notice-bar/tui-notice-bar */ "components/thorui/tui-notice-bar/tui-notice-bar").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-notice-bar/tui-notice-bar.vue */ 303))
+    },
+    tuiBottomNavigation: function() {
+      return __webpack_require__.e(/*! import() | components/thorui/tui-bottom-navigation/tui-bottom-navigation */ "components/thorui/tui-bottom-navigation/tui-bottom-navigation").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-bottom-navigation/tui-bottom-navigation.vue */ 310))
     }
   }
 } catch (e) {
@@ -304,7 +307,6 @@ var _default =
 {
   data: function data() {
     return {
-      isLogin: false,
       webURL: 'https://www.thorui.cn/wx',
       top: 0, //标题图标距离顶部距离
       opacity: 0,
@@ -312,43 +314,86 @@ var _default =
       pageIndex: 1,
       loadding: false,
       pullUpOn: true,
-      pv: 0,
-      uv: 0,
-      content: '' };
+      visitData: { visit_pv: 0, visit_uv: 0 },
+      content: '',
+      pid: '',
+      store_id: '',
+      itemList: [
+      {
+        text: '往期',
+        iconPath: '/static/components/bottom-navigation/icon_menu_gray.png',
+        selectedIconPath: '/static/components/bottom-navigation/icon_menu_gray.png',
+        color: '#666',
+        //1-选中切换，2-跳转、请求、其他操作，3-菜单
+        type: 3,
+        //自定义参数，类型自定义
+        parameter: null,
+        //子菜单left值,不传默认50%,当菜单贴近左右两边可用此参数调整
+        popupLeft: '',
+        itemList: [
+        {
+          //不建议超过6个字，请自行控制
+          text: '全部文章',
+          //自定义参数，类型自定义
+          parameter: null },
+
+        {
+          text: 'ThorUI小程序',
+          //自定义参数，类型自定义
+          parameter: null }] },
+
+
+
+      {
+        text: '小程序',
+        color: '#666',
+        //1-选中切换，2-跳转、请求、其他操作，3-菜单
+        type: 2,
+        //子菜单left值,不传默认50%,当菜单贴近左右两边可用此参数调整
+        popupLeft: '',
+        itemList: [] },
+
+      {
+        text: '更多',
+        iconPath: '/static/components/bottom-navigation/icon_menu_gray.png',
+        selectedIconPath: '/static/components/bottom-navigation/icon_menu_gray.png',
+        color: '#666',
+        //1-选中切换，2-跳转、请求、其他操作，3-菜单
+        type: 3,
+        //自定义参数，类型自定义
+        parameter: null,
+        //子菜单left值,不传默认50%,当菜单贴近左右两边可用此参数调整
+        popupLeft: '',
+        itemList: [
+        {
+          //不建议超过6个字，请自行控制
+          text: '打赏作者',
+          //自定义参数，类型自定义
+          parameter: null },
+
+        {
+          text: '联系我们',
+          //自定义参数，类型自定义
+          parameter: null },
+
+        {
+          text: 'ThorUI文档',
+          //自定义参数，类型自定义
+          parameter: null }] }] };
+
+
+
+
 
   },
-  onLoad: function onLoad(options) {var _this = this;
-    var obj = {};
-
-    obj = wx.getMenuButtonBoundingClientRect();
-
-
-
-
-
-
-
-    uni.getSystemInfo({
-      success: function success(res) {
-        _this.width = obj.left || res.windowWidth;
-        _this.height = obj.top ? obj.top + obj.height + 8 : res.statusBarHeight + 44;
-        _this.top = obj.top ? obj.top + (obj.height - 32) / 2 : res.statusBarHeight + 6;
-        _this.scrollH = res.windowWidth * 0.6;
-      } });
-
-    var appid = this.$store.state.appid;
-    var secret = this.$store.state.secret;
-    var url = "/getStoreStatic/" + appid + "/" + secret;
-    var data = { "begin_date": 20220315, "end_date": 20220315 };
-    this.tui.request(url, 'POST', data, true).then(function (res) {
-      console.log('res', res.data.list);
-    });
-    url = "/getStoreInfo/" + appid;
-    this.tui.request(url).then(function (res) {
-      console.log('res', res);
-      _this.$store.commit('setStoreState', res.state);
-      _this.$store.commit('setStoreInfo', res.storeInfo);
-    });
+  onLoad: function onLoad(options) {
+    this.pid = uni.getStorageSync("pid");
+    this.store_id = uni.getStorageSync("store_id");
+    if (this.pid && this.store_id) {
+      this.initial(this.pid, this.store_id);
+    } else {
+      uni.navigateTo({ url: '/pages/login/login/login' });
+    }
   },
   computed: {
     storeInfo: function storeInfo() {
@@ -356,9 +401,23 @@ var _default =
     },
     state: function state() {
       return this.$store.state.storeState;
+    },
+    isLogin: function isLogin() {
+      return this.$store.state.isLogin;
     } },
 
   methods: {
+    initial: function initial(pid, store_id) {var _this = this;
+      var url = "/getStoreStaticData/" + pid + '/' + store_id;
+      this.tui.request(url).then(function (res) {
+        console.log('res', res);
+        _this.$store.commit('setStoreState', res.state);
+        _this.visitData = res.data[0];
+      });
+    },
+    menu: function menu() {
+      console.log('menu');
+    },
     href: function href(page, index) {
       //未登录状态下应跳转至登录页面，此处未作处理
       var url = '';
@@ -375,7 +434,7 @@ var _default =
         case 5:
           url = '/pages/my/refundList/refundList';
           break;
-        case 6:
+        case 'goods':
           url = '/pages/index/productList/productList?currentTab=' + index;
         default:
           break;}
@@ -391,49 +450,17 @@ var _default =
         this.tui.toast('功能尚未完善~');
       }
     },
-    detail: function detail() {
-      uni.navigateTo({
-        url: '/pages/index/productDetail/productDetail' });
-
-    },
-    initNavigation: function initNavigation(e) {
-      this.opacity = e.opacity;
-      this.top = e.top;
-    },
-    opacityChange: function opacityChange(e) {
-      this.opacity = e.opacity;
-    },
     login: function login() {
       this.isLogin = true;
       this.tui.toast('模拟登录成功~');
+    },
+    onAdd: function onAdd() {
+      this.tui.href('/pages/index/product/product');
     } },
 
-  onPageScroll: function onPageScroll(e) {
-    this.scrollTop = e.scrollTop;
-  },
   onPullDownRefresh: function onPullDownRefresh() {
-    setTimeout(function () {
-      uni.stopPullDownRefresh();
-    }, 200);
-  }
-  // onReachBottom: function() {
-  // 	if (!this.pullUpOn) return;
-  // 	this.loadding = true;
-  // 	if (this.pageIndex == 4) {
-  // 		this.loadding = false;
-  // 		this.pullUpOn = false;
-  // 	} else {
-  // 		let loadData = JSON.parse(JSON.stringify(this.productList));
-  // 		loadData = loadData.splice(0, 10);
-  // 		if (this.pageIndex == 1) {
-  // 			loadData = loadData.reverse();
-  // 		}
-  // 		this.productList = this.productList.concat(loadData);
-  // 		this.pageIndex = this.pageIndex + 1;
-  // 		this.loadding = false;
-  // 	}
-  // }
-};exports.default = _default;
+    this.initial(this.pid, this.store_id);
+  } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

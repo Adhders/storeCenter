@@ -13,8 +13,6 @@ import {createStore} from 'vuex'
 const store = createStore({
 // #endif
 	state: {
-		appid: "wx09760711e33ab5bb",
-		secret: "53dc8454d875811c698b8d42bfac644e",
 		//是否登录 项目中改为真实登录信息判断，如token
 		isLogin: false,
 		//用户信息
@@ -26,13 +24,16 @@ const store = createStore({
 		networkConnected: true,
 		isOnline: false,
 		width : 750,
-		targetOrder: null,
 		targetCustomer: null,
 		refundList: [],
 		orderList: [],
 		storeState: {'pendingPay': 0, 'pendingDelivery': 0, 'refundOrder': 0, 'onSales': 0, 'putAway': 0, 'orderNum': 0, 'receipt': 0},
 		addressList: [],
-		currentReview: []
+		currentReview: [],
+		goodsList: [],
+		goodsGroup: [],
+		goodsProperty: [],
+		tagList: []
 	},
 	mutations: {
 		setReturnUrl(state, returnUrl) {
@@ -56,11 +57,8 @@ const store = createStore({
 		setAddress(state, addressList){
 			state.addressList = addressList
 		},
-		setStoreState(state, state){
-		    state.storeState = state
-	    },
-		setTargetOrder(state, order){
-			state.targetOrder = order
+		setStoreState(state, storeState){
+		    state.storeState = storeState
 	    },
 		setTargetCustomer(state, customer){
 			state.targetCustomer = customer
@@ -71,6 +69,19 @@ const store = createStore({
 		setOrderList(state, orderList){
 			state.orderList = orderList
 		},
+		updateGoodsList(state,goodsList){
+			state.goodsList = goodsList
+		},
+		updateGoodsGroup(state, goodsGroup){
+			state.goodsGroup = goodsGroup
+		},
+		updateGoodsProperty(state, goodsProperty){
+			state.goodsProperty = goodsProperty
+		},
+		updateTagList(state, goodsTag){
+			state.tagList = goodsTag
+		}
+
 	},
 	actions: {
 		getOnlineStatus: async function({

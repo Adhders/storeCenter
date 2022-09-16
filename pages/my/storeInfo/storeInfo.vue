@@ -3,7 +3,7 @@
 		<tui-list-cell padding="0" :hover="false">
 			<view class="tui-list-cell">
 				<view>店铺头像</view>
-				<image :src="storeInfo.trademark" class="tui-avatar"></image>
+				<image :src="storeInfo.trademark" class="tui-avatar" mode="aspectFill"></image>
 			</view>
 		</tui-list-cell>
 		<tui-list-cell padding="0">

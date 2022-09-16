@@ -17,27 +17,13 @@
 						</view>
 					</view>
 				</tui-list-cell>
-				<block v-for="(item,index) in order.goodsList" :key="index">
-					<tui-list-cell padding="0" @tap="detail(order)">
-						<view class="tui-goods-item">
-							<image :src=item.defaultImageUrl class="tui-goods-img"></image>
-							<view class="tui-goods-center">
-								<view class="tui-goods-name">{{item.title}}</view>
-								<view class="tui-goods-attr">{{item.propertyList | getProperty}}</view>
-							</view>
-							<view class="tui-price-right">
-								<view>￥{{item.price}}</view>
-								<view>x{{item.buyNum}}</view>
-							</view>
-						</view>
-					</tui-list-cell>
-				</block>
+				<t-order-item :order="order"></t-order-item>
 				<tui-list-cell :hover="false" unlined>
 					<view class="tui-goods-price">
 						<view>共{{order.goodsList | getNum}}件商品 实付：</view>
 						<view class="tui-size-24">￥</view>
-						<view class="tui-price-large">{{order.netCost.toFixed(2).split('.')[0]}}</view>
-						<view class="tui-size-24">.{{order.netCost.toFixed(2).split('.')[1]}}</view>
+						<view class="tui-price-large">{{order.netCost.split('.')[0]}}</view>
+						<view class="tui-size-24">.{{order.netCost.split('.')[1]}}</view>
 					</view>
 				</tui-list-cell>
 				<view class="tui-order-btn">
@@ -65,7 +51,11 @@
 </template>
 
 <script>
+	import tOrderItem from '@/components/views/t-order-item/t-order-item'
 	export default {
+		components: {
+			tOrderItem
+		},
 		data() {
 			return {
 				tabs: [ "全部", "待付款",  "待发货"],
@@ -84,13 +74,13 @@
 			}
 		},
 		onLoad(option){
-			console.log('option', option)
-			let url = '/getStoreOrder/' + this.$store.state.appid
-			this.tui.request(url,'GET', undefined, true).then((res)=>{
+			this.pid = uni.getStorageSync("pid")
+			this.store_id = uni.getStorageSync("store_id")
+			let url = '/getStoreAllOrder/' + this.pid + '/' + this.store_id
+			this.tui.request(url).then((res)=>{
                 this.loadding = false
 				this.$store.commit('setOrderList', res.orderList)
 				this.currentTab= (option.currentTab)? parseInt(option.currentTab): 0
-				console.log('currentTab', this.currentTab)
 				this.switchTab(this.currentTab)
 			})
 		},
@@ -157,10 +147,8 @@
 				thi.tui.totast("待开发")
 			},
 			detail(order) {
-				console.log('order', order)
-				this.$store.commit('setTargetOrder', order)
 				uni.navigateTo({
-					url: '/pages/my/orderDetail/orderDetail'
+					url: '/pages/my/orderDetail/orderDetail?order=' + encodeURIComponent(JSON.stringify(order))
 				})
 			},
 			userInfo(openid){
@@ -256,6 +244,13 @@
 		padding: 10rpx 30 rpx
 
 	}
+	.tui-goods-price {
+		width: 100%;
+		display: flex;
+		align-items: flex-end;
+		justify-content: flex-end;
+		font-size: 24rpx;
+	}
 	
 	.tui-customer-name{
 		font-size: 26rpx;
@@ -266,80 +261,6 @@
 		color: rgb(228, 31, 25);
 		font-size: 26rpx;
 		margin-left: 5px;
-	}
-
-	.tui-goods-item {
-		width: 100%;
-		padding: 20rpx 30rpx;
-		box-sizing: border-box;
-		display: flex;
-		justify-content: space-between;
-	}
-
-	.tui-goods-img {
-		width: 180rpx;
-		height: 180rpx;
-		display: block;
-		flex-shrink: 0;
-	}
-
-	.tui-goods-center {
-		flex: 1;
-		padding: 20rpx 8rpx 0;
-		box-sizing: border-box;
-	}
-
-	.tui-goods-name {
-		width: 90%;
-		word-break: break-all;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		font-size: 26rpx;
-		line-height: 32rpx;
-	}
-
-	.tui-goods-attr {
-		font-size: 22rpx;
-		color: #888888;
-		line-height: 32rpx;
-		padding-top: 20rpx;
-		word-break: break-all;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-	}
-
-	.tui-price-right {
-		text-align: right;
-		font-size: 24rpx;
-		color: #888888;
-		line-height: 30rpx;
-		padding-top: 20rpx;
-	}
-	.tui-color-red {
-		color: #E41F19;
-		padding-right: 30rpx;
-	}
-	.tui-goods-price {
-		width: 100%;
-		display: flex;
-		align-items: flex-end;
-		justify-content: flex-end;
-		font-size: 24rpx;
-	}
-	.tui-size-24 {
-		font-size: 24rpx;
-		line-height: 24rpx;
-	}
-	.tui-price-large {
-		font-size: 32rpx;
-		line-height: 30rpx;
-		font-weight: 500;
 	}
 	.tui-order-btn {
 		width: 100%;
