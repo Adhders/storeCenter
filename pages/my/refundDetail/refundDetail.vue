@@ -74,7 +74,7 @@ export default {
 		};
 	},
 	onLoad(options){
-		this.order = this.order = JSON.parse(decodeURIComponent(options.order))
+		this.order = JSON.parse(decodeURIComponent(options.order))
 	},
    	filters: {
 		getPrice(price) {
@@ -92,10 +92,9 @@ export default {
 			return str.slice(0,-1)
 		}
  	},
-	 
 	methods: {
 		getImageUrl(status){
-			let fileName = (status==='退款成功')? 'img_success3x.png' : (status==='处理中' )? 'img_waiting.png' : 'img_refundfailure.png'
+			let fileName = (status==='退款成功')? 'img_success3x.png' : (status==='申请已撤销' )? 'img_refundfailure.png' : 'img_waiting.png'
 			return this.webURL + fileName
 			
 		}

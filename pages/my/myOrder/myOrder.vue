@@ -3,15 +3,15 @@
 		<tui-tab :tabs="tabs" :isFixed="scrollTop>=0" :current="currentTab" selectedColor="#E41F19" sliderBgColor="#E41F19"
 		 @change="change"></tui-tab>
 		<!--选项卡逻辑自己实现即可，此处未做处理-->
-    	<tui-loading v-if="loadding"></tui-loading>
-		<view :class="{'tui-order-list':scrollTop>=0}" v-else>
+		<view :class="{'tui-order-list':scrollTop>=0}">
 			<view class="tui-order-item" v-for="(order, orderIndex) in displayList" :key="orderIndex">
 				<tui-list-cell :hover="false" :lineLeft="false" padding="10rpx 30rpx">
 					<view class="tui-goods-title">
-						<view style="display: flex; align-items: center">
+						<!-- <view style="display: flex; align-items: center">
 							<image :src="order.avatarUrl" class="tui-avatar" @tap="userInfo(order.openid)"></image>
 							<view class="tui-customer-name">{{order.nickName}}</view>
-						</view>
+						</view> -->
+						<view style="color: #666">下单时间：{{order.create_time}}</view>
 						<view>
 							<view class="tui-order-status">{{order.status}}</view>
 						</view>
@@ -38,7 +38,7 @@
 					</view>
 				</view>
 			</view>
-			<tui-no-data v-if="displayList.length===0" :fixed="false"
+			<tui-no-data v-if="!loadding&&displayList.length===0" :fixed="false"
 						 imgUrl="https://system.chuangbiying.com/static/images/index/img_noorder.png">
 				您还没有相关的订单</tui-no-data>
 		</view>
@@ -61,26 +61,32 @@
 				tabs: [ "全部", "待付款",  "待发货"],
        			loadding: true,
 				displayList: [],
+				currentList: [],
 				selectedOrder: null,
 				selectedImg: '',
 				currentTab: 0,
 				pageIndex: 1,
 				isShow: false,
 				isDelete: false,
+				pageSize: 10,
 				loaddingMore: false,
 				pullUpOn: true,
-				scrollTop: 0,
-				
+				pageNum: 1,
+				scrollTop: 0
 			}
 		},
-		onLoad(option){
+		onLoad(options){
 			this.pid = uni.getStorageSync("pid")
 			this.store_id = uni.getStorageSync("store_id")
 			let url = '/getStoreAllOrder/' + this.pid + '/' + this.store_id
 			this.tui.request(url).then((res)=>{
                 this.loadding = false
-				this.$store.commit('setOrderList', res.orderList)
-				this.currentTab= (option.currentTab)? parseInt(option.currentTab): 0
+				let orderList = res.orderList
+				if(options.openid){
+					orderList = res.orderList.filter((o)=>{return o.customer == options.openid})
+				}
+				this.$store.commit('setOrderList', orderList)
+				this.currentTab= (options.currentTab)? parseInt(options.currentTab): 0
 				this.switchTab(this.currentTab)
 			})
 		},
@@ -126,25 +132,41 @@
 			switchTab(v){
 				switch(v){
 					case 0: {
-						this.displayList = this.orderList
+						this.currentList = this.orderList
 						break;
 					}
 					case 1: {
-						this.displayList = this.orderList.filter((o)=>{
+						this.currentList = this.orderList.filter((o)=>{
 							return o.status==="待支付"
 						})
 						break;
 					}
 					case 2: {
-						this.displayList = this.orderList.filter((o)=>{
+						this.currentList = this.orderList.filter((o)=>{
 							return o.status==="待发货"
 						})
 						break;
 					}
 				}
+				this.displayList = this.currentList.slice(0, this.pageSize)
+				this.pageNum = 1
+				this.pullUpOn = true
+				this.loaddingMore = false
 			},
 			delivery(order){
-				thi.tui.totast("待开发")
+				let url = '/createDelivery/' + order.orderNum 
+                let data ={
+                    tracking_number: ''
+                }
+				this.tui.request(url, 'POST', data).then((res)=>{
+					if(res.code==0){
+						order.status='待收货'
+						this.tui.toast('发货成功，等待买家收货')
+						let index = this.orderList.findIndex((o)=>{return o.orderNum===order.orderNum})
+						this.orderList[index].status='待收货'
+						this.switchTab(this.currentTab)
+					}
+				})
 			},
 			detail(order) {
 				uni.navigateTo({
@@ -153,7 +175,6 @@
 			},
 			userInfo(openid){
 				console.log('openid', openid)
-
 			},
 			invoiceDetail(){
 				this.tui.href('/pages/my/invoiceDetail/invoiceDetail')
@@ -164,13 +185,19 @@
 				}, 200);
 			},
 			onReachBottom() {
-				//只是测试效果，逻辑以实际数据为准
-				this.loaddingMore = true
-				this.pullUpOn = true
-				setTimeout(() => {
-					this.loaddingMore = false
-					this.pullUpOn = false
-				}, 1000)
+				if(!this.pullUpOn) return
+				if(this.pageNum >= this.currentList.length/this.pageSize){
+					setTimeout(() => {
+						this.loaddingMore = false
+						this.pullUpOn = false
+					}, 300)
+				}else{
+					this.loaddingMore = true
+					setTimeout(() => {
+						this.pageNum = this.pageNum+1
+						this.displayList = this.currentList.slice(0, this.pageSize*this.pageNum)
+					}, 300)
+				}
 			},
 			onPageScroll(e) {
 				this.scrollTop = e.scrollTop;
@@ -235,6 +262,7 @@
 	}
 	.tui-goods-title {
 		width: 100%;
+		padding: 12rpx 0;
 		font-size: 28rpx;
 		display: flex;
 		align-items: center;
@@ -259,7 +287,7 @@
     
 	.tui-order-status {
 		color: rgb(228, 31, 25);
-		font-size: 26rpx;
+		font-size: 28rpx;
 		margin-left: 5px;
 	}
 	.tui-order-btn {

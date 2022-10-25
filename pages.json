@@ -115,22 +115,6 @@
 				"backgroundColorBottom": "#FFFFFF"
 			}
 	
-		},{
-			"path": "pages/index/customerRefundOrder/customerRefundOrder",
-			"style": {
-				"navigationBarTitleText": "用户退款订单",
-				"app-plus": {
-					"bounce": "vertical"
-				}
-			}
-		},{
-			"path": "pages/index/customerOrder/customerOrder",
-			"style": {
-				"navigationBarTitleText": "用户订单",
-				"app-plus": {
-					"bounce": "vertical"
-				}
-			}
 		},
 		{
 			"path": "pages/index/customerList/customerList",
@@ -151,6 +135,14 @@
 				}
 			}
 		}, {
+			"path": "pages/index/customerInfo/customerInfo",
+			"style": {
+				"navigationBarTitleText": "顾客信息",
+				"app-plus": {
+					"bounce": "vertical"
+				}
+			}
+		},{
 			"path": "pages/index/coupon/coupon",
 			"style": {
 				"navigationBarTitleText": "领券中心",
@@ -181,7 +173,17 @@
 		}, {
 			"path": "pages/index/product/product",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "商品详情",
+				"backgroundColorTop": "#fff",
+				"backgroundColorBottom": "#fff",
+				"app-plus": {
+					"bounce": "vertical"
+				}
+			}
+		},{
+			"path": "pages/index/spec/spec",
+			"style": {
+				"navigationBarTitleText": "商品规格",
 				"backgroundColorTop": "#fff",
 				"backgroundColorBottom": "#fff",
 				"app-plus": {
@@ -194,14 +196,6 @@
 				"navigationBarTitleText": "搜索",
 				"backgroundColorTop": "#fff",
 				"backgroundColorBottom": "#fff",
-				"app-plus": {
-					"bounce": "vertical"
-				}
-			}
-		}, {
-			"path": "pages/my/userInfo/userInfo",
-			"style": {
-				"navigationBarTitleText": "个人信息",
 				"app-plus": {
 					"bounce": "vertical"
 				}

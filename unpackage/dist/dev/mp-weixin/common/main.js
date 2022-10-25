@@ -112,7 +112,7 @@ __webpack_require__.r(__webpack_exports__);
           });
           updateManager.onUpdateFailed(function () {
             // 新的版本下载失败
-            that.tui.modal('更新失败', '新版本更新失败，为了获得更好的体验，请您删除当前小程序，重新搜索打开', false, function (res) {});
+            that.tui.modal('更新失败', '新版本更新失败，为了获得更好的体验，请您删除当前小程序，重新扫码打开', false, function (res) {});
           });
         }
       });

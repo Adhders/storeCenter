@@ -21,48 +21,46 @@
 				:size="30"
 				:sliderWidth="60"
 			></tui-tabs>
-			<tui-loading v-if="loadding"></tui-loading>
-            <block>
-				<tui-no-data v-if="displayList.length===0" 
-					imgUrl="https://system.chuangbiying.com/static/images/index/img_nodata.png">
-						没有相关商品
-				</tui-no-data>
-				<view v-else>
-					<view class="tui-product-list tui-padding">
-						<view class="tui-product-container">
-							<block v-for="(item, index) in displayList" :key="index">
-								<tui-swipe-action :actions="item.isPutAway? actions1 : actions2" @click="itemClick($event, item)" >
-									<template v-slot:content>
-										<view class="tui-pro-item tui-flex-list" hover-class="tui-hover" :hover-start-time="150">
-											<image :src="item.defaultImageUrl" class="tui-pro-img tui-proimg-list"  mode="aspectFill" />
-											<view class="tui-pro-content">
-												<view class="tui-pro-tit">{{ item.title }}</view>
-												<view class="tui-pro-price">
-													<text class="tui-sale-price">￥{{ item.price }}</text>
-													<text class="tui-factory-price">￥{{ item.originalPrice }}</text>
-												</view>
-												<view class="tui-flex__center tui-gray">
-													<view>销量 {{item.salesNum }}</view>
-													<view>库存 {{item.stock}}</view>
-													<tui-bubble-popup :show="showIndex===index" class="bubble-popup" backgroundColor="#656565"
-														maskBgColor="transparent" position="absolute" direction="bottom" @close="onClose" width="130rpx"
-														  translateY="-100%" triangleRight="30rpx" triangleBottom="-22rpx">
-														<view class="tui-menu-item" @click="onCopy(item)">复制</view>
-														<view class="tui-menu-item" @click="onEdit(item)">编辑</view>
-													</tui-bubble-popup>
-													<tui-icon name="more-fill" size="22" @click="showIndex=index" style="height: 34rpx"></tui-icon>
-												</view>
-											</view>
-										</view>
-									</template>
-								</tui-swipe-action>
-							</block>
-						</view>
+			<tui-no-data v-if="!loadding&& displayList.length===0" 
+				imgUrl="https://system.chuangbiying.com/static/images/index/img_nodata.png">
+					没有相关商品
+			</tui-no-data>
+			<view v-else>
+				<view class="tui-product-list tui-padding">
+					<view class="tui-product-container">
+						<block v-for="(item, index) in displayList" :key="index">
+							<view class="tui-pro-item tui-flex-list" hover-class="tui-hover" :hover-start-time="150" @click="onEdit(item)">
+								<image :src="item.defaultImageUrl" class="tui-pro-img tui-proimg-list"  mode="aspectFill" />
+								<view class="tui-pro-content">
+									<view class="tui-pro-tit">{{ item.title }}</view>
+									<view class="tui-pro-price">
+										<text class="tui-sale-price">￥{{ item.price }}</text>
+										<text class="tui-factory-price" v-if="item.originalPrice">￥{{ item.originalPrice }}</text>
+									</view>
+									<view class="tui-flex__center tui-gray">
+										<view>销量 {{item.salesNum }}</view>
+										<view>总库存 {{item.stock}}</view>
+										<tui-bubble-popup :show="showIndex===index" class="bubble-popup" backgroundColor="#656565"
+											maskBgColor="transparent" position="absolute" direction="bottom" @close="onClose" width="130rpx"
+												translateY="-100%" triangleRight="30rpx" triangleBottom="-22rpx">
+											<view class="tui-menu-item" @tap.stop="onCopy(item)">复制</view>
+											<view class="tui-menu-item" @tap.stop="itemClick('putaway', item)">{{item.isPutAway? '下架': '上架'}}</view>
+											<view class="tui-menu-item" @tap.stop="itemClick('delete', item)">删除</view>
+										</tui-bubble-popup>
+										<tui-icon name="more-fill" size="22" @tap.stop="onChoice(index)" style="height: 34rpx"></tui-icon>
+									</view>
+								</view>
+							</view>
+						</block>
 					</view>
 				</view>
-			</block>
+			</view>
 		</view>
 		<tui-modal :show="modal" color="#333"  :content="content" @click="handle"></tui-modal>
+		<!--加载loadding-->
+		<tui-loadmore v-if="loaddingMore" :index="3" type="red"></tui-loadmore>
+		<tui-nomore v-if="!pullUpOn" backgroundColor="#fafafa"></tui-nomore>
+		<!--加载loadding-->
 	</view>
 </template>
 
@@ -74,7 +72,6 @@ export default {
 		return {
 			showIndex: '',
 			modal: false,
-			targetIndex: '',
 			targetItem: '',
 			width: 350,
 			height: 64,
@@ -93,6 +90,7 @@ export default {
 					name: '已售罄'
 				}
 			],
+			mode: '',
 			content: '确定删除该商品吗？',
 			actions1: [
 				{
@@ -149,6 +147,10 @@ export default {
 			isList: false,
 			screenType: 1,
 			sortWay: '', 
+			pageSize: 10,
+			loaddingMore: false,
+			pullUpOn: true,
+			pageNum: 1,
 			displayList: []
 		};
 	},
@@ -156,9 +158,14 @@ export default {
 		this.user = uni.getStorageSync("pid")
 		this.store_id = uni.getStorageSync("store_id")
 		let url = '/queryGoods/' + this.user + '/' + this.store_id
-		this.tui.request(url,'GET').then((res)=>{
+		this.tui.request(url).then((res)=>{
 			this.displayList = res.goodsList
 			this.loadding = false
+			res.goodsList.forEach((goods)=>{
+				let stock = 0
+				goods.skuList.forEach((sku)=>{stock += parseInt(sku.stock)})
+				goods.stock = stock
+			})
 			this.$store.commit('updateGoodsList', res.goodsList)
 			this.current = (options.currentTab!=='undefined')? parseInt(options.currentTab): 0
 			this.isList = this.current!==0
@@ -190,6 +197,9 @@ export default {
 			this.height = Number(e.height);
 			this.top = Number(e.top);
 		},
+		onChoice(e){
+			this.showIndex=e
+		},
 		onEdit(e){
 			this.showIndex = ''
 			this.tui.href( '/pages/index/product/product?edit=true&product=' + encodeURIComponent(JSON.stringify(e)))
@@ -203,7 +213,7 @@ export default {
 		},
 		handle(e){
 			if(e.index==1){
-				if(this.targetIndex==0){
+				if(this.mode=='putaway'){
 					this.targetItem.isPutAway=!this.targetItem.isPutAway
 					let url = '/updateGoods/' + this.user + '/' + this.store_id + '/status'
 					this.tui.request(url, 'PUT', {id: [this.targetItem.id], 'isPutAway': this.targetItem.isPutAway}).then(
@@ -211,7 +221,6 @@ export default {
 							let index = this.goodsList.findIndex((val)=>{ return this.targetItem.id == val.id })
 							this.goodsList[index].isPutAway=this.targetItem.isPutAway
 							this.targetItem = ''
-							this.targetIndex = ''
 						})
 				}else{
 					let url =  '/deleteGoods/' + this.user + '/' + this.store_id
@@ -219,11 +228,11 @@ export default {
 						let index = this.goodsList.findIndex((val)=>{ return this.targetItem.id == val.id })
 						this.goodsList.splice(index, 1)
 						this.targetItem = ''
-						this.targetIndex = ''
 					})
 				}
 			}
 			this.modal = false
+			this.showIndex = ''
 		},
 		change(e) {
 			this.current = e.index;
@@ -234,51 +243,68 @@ export default {
 			return false
 		},
 		onClose(e){
-			console.log('e', e)
 			this.showIndex = ''
 		},
         switchTab(v){
-			console.log('switch', v)
 			switch(v){
 				case 0: {
-					this.displayList = this.goodsList
+					this.currentList = this.goodsList
 					break;
 				}
 				case 1: {
-					this.displayList = this.goodsList.filter((o)=>{
+					this.currentList = this.goodsList.filter((o)=>{
 						return o.isPutAway
 					})
 					break;
 				}
 				case 2: {
-					this.displayList = this.goodsList.filter((o)=>{
+					this.currentList = this.goodsList.filter((o)=>{
 						return !o.isPutAway
 					})
 					break;
 				}
 				case 3: {
-					this.displayList = this.goodsList.filter((o)=>{
-						o.stock===0
+					this.currentList = this.goodsList.filter((o)=>{
+						let index = o.skuList.findIndex((sku)=>{ return parseInt(sku.stock)<=0})
+						return index!==-1
 					})
 					break;
 				}
 			}
+			this.displayList = this.currentList.slice(0, this.pageSize)
+			this.pageNum = 1
+			this.pullUpOn = true
+			this.loaddingMore = false
 		},  
 		rankingChangeTab(index) {
 			this.rankingTab = index;
 		},
-		itemClick(e, item){
-			console.log('click', e, item)
+		itemClick(mode, item){
+			console.log('click', mode, item)
 			this.modal = true
-			this.targetIndex = e.index
 			this.targetItem = item
-			if(e.index==0){
+			if(mode=='putaway'){
 				this.content = `确定要${item.isPutAway? '下架': '上架'}该商品吗？`
 			}
 			else{
 				this.content = '确定删除该商品吗？'
 			}
 		
+		}
+	},
+	onReachBottom() {
+		if(!this.pullUpOn) return
+		if(this.pageNum >= this.currentList.length/this.pageSize){
+			setTimeout(() => {
+				this.loaddingMore = false
+				this.pullUpOn = false
+			}, 300)
+		}else{
+			this.loaddingMore = true
+			setTimeout(() => {
+				this.pageNum = this.pageNum+1
+				this.displayList = this.currentList.slice(0, this.pageSize*this.pageNum)
+			}, 300)
 		}
 	}
 };
@@ -346,7 +372,6 @@ export default {
 	padding: 8rpx;
 	background: #fff;
 	box-sizing: border-box;
-	overflow: hidden;
 	transition: all 0.15s ease-in-out;
 }
 
@@ -361,8 +386,8 @@ export default {
 }
 
 .tui-proimg-list {
-	width: 180rpx;
-	height: 180rpx !important;
+	width: 200rpx;
+	height: 200rpx !important;
 	flex-shrink: 0;
 	border-radius: 8rpx;
 }
@@ -370,9 +395,10 @@ export default {
 .tui-pro-content {
 	flex: 1;
 	display: flex;
+	position: relative;
 	flex-direction: column;
 	justify-content: space-between;
-	padding: 10rpx 16rpx;
+	padding: 0rpx 16rpx;
 }
 
 .tui-pro-tit {
@@ -404,12 +430,12 @@ export default {
 /*======商品======= end*/
 .bubble-popup {
 	position: absolute;
-	right: 135rpx;
-	bottom: 50rpx;
+	right: 124rpx;
+	bottom: 34rpx;
 }
 .tui-menu-item {
 	width: 100%;
-    padding: 16rpx 0;
+    padding: 14rpx 0;
     text-align: center;
     position: relative;
 }

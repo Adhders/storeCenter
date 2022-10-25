@@ -53,7 +53,6 @@
 	padding: 8rpx;
 	background: #fff;
 	box-sizing: border-box;
-	overflow: hidden;
 	transition: all 0.15s ease-in-out;
 }
 .tui-flex-list {
@@ -65,17 +64,18 @@
 	flex-shrink: 0;
 }
 .tui-proimg-list {
-	width: 180rpx;
-	height: 180rpx !important;
+	width: 200rpx;
+	height: 200rpx !important;
 	flex-shrink: 0;
 	border-radius: 8rpx;
 }
 .tui-pro-content {
 	flex: 1;
 	display: flex;
+	position: relative;
 	flex-direction: column;
 	justify-content: space-between;
-	padding: 10rpx 16rpx;
+	padding: 0rpx 16rpx;
 }
 .tui-pro-tit {
 	color: #2e2e2e;
@@ -104,12 +104,12 @@
 /*======商品======= end*/
 .bubble-popup {
 	position: absolute;
-	right: 135rpx;
-	bottom: 50rpx;
+	right: 124rpx;
+	bottom: 34rpx;
 }
 .tui-menu-item {
 	width: 100%;
-    padding: 16rpx 0;
+    padding: 14rpx 0;
     text-align: center;
     position: relative;
 }

@@ -5,11 +5,11 @@
   "onReachBottomDistance": 50,
   "usingComponents": {
     "tui-tabs": "/components/thorui/tui-tabs/tui-tabs",
-    "tui-loading": "/components/thorui/tui-loading/tui-loading",
     "tui-no-data": "/components/thorui/tui-no-data/tui-no-data",
-    "tui-swipe-action": "/components/thorui/tui-swipe-action/tui-swipe-action",
     "tui-bubble-popup": "/components/thorui/tui-bubble-popup/tui-bubble-popup",
     "tui-icon": "/components/thorui/tui-icon/tui-icon",
-    "tui-modal": "/components/thorui/tui-modal/tui-modal"
+    "tui-modal": "/components/thorui/tui-modal/tui-modal",
+    "tui-loadmore": "/components/thorui/tui-loadmore/tui-loadmore",
+    "tui-nomore": "/components/thorui/tui-nomore/tui-nomore"
   }
 }

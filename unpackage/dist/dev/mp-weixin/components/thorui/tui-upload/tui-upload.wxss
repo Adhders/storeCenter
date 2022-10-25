@@ -48,7 +48,7 @@
   border-radius: 50%;
   color: white;
   font-size: 34rpx;
-  z-index: 999;
+  z-index: 10;
 }
 .tui-img-del.data-v-218c3bf4::before {
   content: '';

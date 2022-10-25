@@ -5,7 +5,6 @@
   "usingComponents": {
     "tui-navigation-bar": "/components/thorui/tui-navigation-bar/tui-navigation-bar",
     "tui-icon": "/components/thorui/tui-icon/tui-icon",
-    "tui-loading": "/components/thorui/tui-loading/tui-loading",
     "tui-list-cell": "/components/thorui/tui-list-cell/tui-list-cell"
   }
 }

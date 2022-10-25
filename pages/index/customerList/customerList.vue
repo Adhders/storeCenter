@@ -11,9 +11,8 @@
 				</view>
 			</view>
 		</tui-navigation-bar>
-		<tui-loading v-if="loadding"></tui-loading>
 	    <view :style="{marginTop: height + 'px'}">
-			<tui-list-cell padding="0" :lineLeft="false" @click="detail(customer)" v-for="customer, index in customerList" :key="index" >
+			<tui-list-cell padding="0" :lineLeft="false" @click="detail(customer)" v-for="customer, index in displayList" :key="index" >
 				<view class="tui-list-cell tui-info-box">
 					<view style="display: flex; align-items: center">
 						<image :src="customer.avatarUrl" class="tui-avatar"></image>
@@ -23,7 +22,6 @@
 				</view>
 			</tui-list-cell>
 		</view>
-		
 	</view>
 </template>
 
@@ -35,7 +33,12 @@
 				width: 350,
 				height: 64,
 				top: 20,
+				pageSize: 10,
+				loaddingMore: false,
+				pullUpOn: true,
+				pageNum: 1,
 				loadding: true,
+				displayList: [],
                 customerList: []
 			}
 		},
@@ -43,9 +46,13 @@
 			this.pid = uni.getStorageSync("pid")
 			this.store_id = uni.getStorageSync("store_id")
 			let url = '/getStoreAllCustomer/' + this.pid + '/' + this.store_id
-			this.tui.request(url,'GET', undefined, true).then((res)=>{
+			this.tui.request(url).then((res)=>{
 				this.loadding = false
 				this.customerList = res.customerList
+				this.displayList = this.customerList.slice(0, this.pageSize)
+				this.pageNum = 1
+				this.pullUpOn = true
+				this.loaddingMore = false
 			})
         },
 		filters: {
@@ -63,11 +70,25 @@
 				this.top = Number(e.top);
 			},
 			detail(customer) {
-				this.$store.commit('setTargetCustomer', customer)
-				let url = "/pages/index/customerDetail/customerDetail?openid=" + customer.openid;
+				let url = "/pages/index/customerDetail/customerDetail?customer=" + encodeURIComponent(JSON.stringify(customer))
 				uni.navigateTo({
 					url: url
 				})
+			}
+		},
+		onReachBottom() {
+			if(!this.pullUpOn) return
+			if(this.pageNum >= this.customerList.length/this.pageSize){
+				setTimeout(() => {
+					this.loaddingMore = false
+					this.pullUpOn = false
+				}, 300)
+			}else{
+				this.loaddingMore = true
+				setTimeout(() => {
+					this.pageNum = this.pageNum+1
+					this.displayList = this.customerList.slice(0, this.pageSize*this.pageNum)
+				}, 300)
 			}
 		}
 	}

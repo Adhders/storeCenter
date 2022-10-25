@@ -1,74 +1,72 @@
 {
-    "pages": [
-        "pages/tabbar/index/index",
-        "pages/tabbar/classify/classify",
-        "pages/tabbar/my/my",
-        "pages/login/login/login",
-        "pages/login/reg/reg",
-        "pages/login/login-pwd/login-pwd",
-        "pages/login/reset-pwd/reset-pwd",
-        "pages/index/customerRefundOrder/customerRefundOrder",
-        "pages/index/customerOrder/customerOrder",
-        "pages/index/customerList/customerList",
-        "pages/index/customerDetail/customerDetail",
-        "pages/index/coupon/coupon",
-        "pages/index/productList/productList",
-        "pages/index/product/product",
-        "pages/common/search/search",
-        "pages/my/userInfo/userInfo",
-        "pages/my/storeInfo/storeInfo",
-        "pages/my/myOrder/myOrder",
-        "pages/my/message/message",
-        "pages/my/myCoupon/myCoupon",
-        "pages/my/refundList/refundList",
-        "pages/order/invoice/invoice",
-        "pages/my/feedback/feedback",
-        "pages/index/video/video",
-        "pages/index/evaluateDetail/evaluateDetail",
-        "pages/index/evaluateReply/evaluateReply",
-        "pages/my/notice/notice",
-        "pages/my/addEvaluate/addEvaluate",
-        "pages/my/invoiceDetail/invoiceDetail",
-        "pages/my/orderDetail/orderDetail",
-        "pages/my/logistics/logistics",
-        "pages/my/refundDetail/refundDetail",
-        "pages/my/nickname/nickname",
-        "pages/my/cropper/cropper"
-    ],
-    "subPackages": [],
-    "window": {
-        "navigationBarBackgroundColor": "#FFFFFF",
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "ThorUI商城",
-        "backgroundColor": "#fafafa",
-        "backgroundColorTop": "#fafafa",
-        "backgroundColorBottom": "#fafafa"
-    },
-    "tabBar": {
-        "color": "#666666",
-        "selectedColor": "#EB0909",
-        "backgroundColor": "#FFFFFF",
-        "list": [
-            {
-                "pagePath": "pages/tabbar/index/index",
-                "text": "首页",
-                "iconPath": "static/images/tabbar/icon_index.png",
-                "selectedIconPath": "static/images/tabbar/icon_index_fill.png"
-            },
-            {
-                "pagePath": "pages/tabbar/classify/classify",
-                "text": "功能",
-                "iconPath": "static/images/tabbar/icon_classify.png",
-                "selectedIconPath": "static/images/tabbar/icon_classify_fill.png"
-            },
-            {
-                "pagePath": "pages/tabbar/my/my",
-                "text": "我的",
-                "iconPath": "static/images/tabbar/icon_my.png",
-                "selectedIconPath": "static/images/tabbar/icon_my_fill.png"
-            }
-        ]
-    },
-    "usingComponents": {},
-    "sitemapLocation": "sitemap.json"
+  "pages": [
+    "pages/tabbar/index/index",
+    "pages/tabbar/classify/classify",
+    "pages/tabbar/my/my",
+    "pages/login/login/login",
+    "pages/login/reg/reg",
+    "pages/login/login-pwd/login-pwd",
+    "pages/login/reset-pwd/reset-pwd",
+    "pages/index/customerList/customerList",
+    "pages/index/customerDetail/customerDetail",
+    "pages/index/customerInfo/customerInfo",
+    "pages/index/coupon/coupon",
+    "pages/index/productList/productList",
+    "pages/index/product/product",
+    "pages/index/spec/spec",
+    "pages/common/search/search",
+    "pages/my/storeInfo/storeInfo",
+    "pages/my/myOrder/myOrder",
+    "pages/my/message/message",
+    "pages/my/myCoupon/myCoupon",
+    "pages/my/refundList/refundList",
+    "pages/order/invoice/invoice",
+    "pages/my/feedback/feedback",
+    "pages/index/video/video",
+    "pages/index/evaluateDetail/evaluateDetail",
+    "pages/index/evaluateReply/evaluateReply",
+    "pages/my/notice/notice",
+    "pages/my/addEvaluate/addEvaluate",
+    "pages/my/invoiceDetail/invoiceDetail",
+    "pages/my/orderDetail/orderDetail",
+    "pages/my/logistics/logistics",
+    "pages/my/refundDetail/refundDetail",
+    "pages/my/nickname/nickname",
+    "pages/my/cropper/cropper"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "ThorUI商城",
+    "backgroundColor": "#fafafa",
+    "backgroundColorTop": "#fafafa",
+    "backgroundColorBottom": "#fafafa"
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#EB0909",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/tabbar/index/index",
+        "text": "首页",
+        "iconPath": "static/images/tabbar/icon_index.png",
+        "selectedIconPath": "static/images/tabbar/icon_index_fill.png"
+      },
+      {
+        "pagePath": "pages/tabbar/classify/classify",
+        "text": "功能",
+        "iconPath": "static/images/tabbar/icon_classify.png",
+        "selectedIconPath": "static/images/tabbar/icon_classify_fill.png"
+      },
+      {
+        "pagePath": "pages/tabbar/my/my",
+        "text": "我的",
+        "iconPath": "static/images/tabbar/icon_my.png",
+        "selectedIconPath": "static/images/tabbar/icon_my_fill.png"
+      }
+    ]
+  },
+  "usingComponents": {}
 }

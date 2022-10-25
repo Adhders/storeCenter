@@ -3,16 +3,16 @@
 		<tui-tabs :tabs="tabs" :currentTab="currentTab" :isFixed="scrollTop>=0" @change="change" selectedColor="#E41F19" sliderBgColor="#E41F19"
 				:itemWidth="(100/tabs.length)+'%'"></tui-tabs>	
 		<!--选项卡逻辑自己实现即可，此处未做处理-->
-    	<tui-loading v-if="loadding"></tui-loading>
-		<view class="tui-order-list" v-else>
+		<view class="tui-order-list">
 			<view class="tui-order-item" v-for="(order, orderIndex) in displayList" :key="orderIndex">
 				<tui-list-cell :hover="false" :lineLeft="false" padding="10rpx 30rpx">
 					<view class="tui-goods-title">
-						<view style="display: flex; align-items: center">
+						<!-- <view style="display: flex; align-items: center">
 							<image :src="order.avatarUrl" class="tui-avatar" @tap="userInfo(order.openid)"></image>
 							<view class="tui-customer-name">{{order.nickName}}</view>
-						</view>
-						<view class="tui-order-status" v-if="order.status==='处理中'">{{order.refundType}}</view>
+						</view> -->
+						<view style="color: #666">申请时间：{{order.application_time}}</view>
+						<view class="tui-order-status" v-if="order.status==='售后处理中'">{{order.refundType}}</view>
 						<view class="tui-order-status" v-else>{{order.status}}</view>
 					</view>
 				</tui-list-cell>
@@ -35,19 +35,22 @@
 							售后详情
 						</tui-button>
 					</view>
-					<view class="tui-btn-ml" v-if="order.status==='处理中'">
+					<view class="tui-btn-ml" v-if="order.status==='售后处理中'">
 						<tui-button type="danger" plain width="152rpx" height="56rpx" :size="26" shape="circle" @tap="onDeal(order)">
 							去处理
 						</tui-button>
 					</view>
 				</view>
 			</view>
-      		<tui-no-data v-if="displayList.length===0" :fixed="false"
+      		<tui-no-data v-if="!loadding&&displayList.length===0" :fixed="false"
 						 imgUrl="https://system.chuangbiying.com/static/images/index/img_noorder.png">
 				您还没有相关的订单</tui-no-data>
 			<tui-modal :show="isDelete" @click="onRemove"  title="确定删除售后单？" content="删除之后此售后单将无法恢复，请慎重考虑？"></tui-modal>	
 		</view>
-		<!-- <tui-divider width="60%" gradual>没有更多了</tui-divider> -->
+		<!--加载loadding-->
+		<tui-loadmore v-if="loaddingMore" :index="3" type="red"></tui-loadmore>
+		<tui-nomore v-if="!pullUpOn" backgroundColor="#fafafa"></tui-nomore>
+		<!--加载loadding-->
 	</view>
 </template>
 
@@ -60,23 +63,31 @@ export default {
 	},
 	data() {
 		return {
-			tabs: [{name: "待受理"}, {name: "处理中"}, {name: "申请记录"}],
+			tabs: [{name: "待受理"}, {name: "售后处理中"}, {name: "申请记录"}],
 			scrollTop: 0,
 			currentTab: 0,
 			selectedOrder: null,
 			isDelete: false,
 			loadding: true,
+			pageSize: 10,
+			loaddingMore: false,
+			pullUpOn: true,
+			pageNum: 1,
       		displayList: [],
-		
 		};
 	},
-    onLoad(option){
+    onLoad(options){
 		this.pid = uni.getStorageSync("pid")
 		this.store_id = uni.getStorageSync("store_id")
 		let url = '/getStoreAllRefundOrder/' + this.pid + '/' + this.store_id
 		this.tui.request(url).then((res)=>{
 			this.loadding = false
-			this.$store.commit('setRefundList', res.refundList)
+			let refundList = res.refundList
+			if(options.openid){
+				refundList = res.refundList.filter((o)=>{return o.customer == options.openid})
+				this.currentTab=2
+			}
+			this.$store.commit('setRefundList', refundList)
 			this.switchTab(this.currentTab)
 		})
 	},
@@ -110,20 +121,24 @@ export default {
 		switchTab(v){
 			switch(v){
 				case 0: {
-					this.displayList = this.refundList.filter((o)=>{
-						return o.status==="处理中"
+					this.currentList = this.refundList.filter((o)=>{
+						return o.status==="售后处理中"
 					})
 					break;
 				}
 				case 1: {
-					this.displayList = []
+					this.currentList = []
 					break;
 				}
 				case 2: {
-					this.displayList = this.refundList
+					this.currentList = this.refundList
 					break;
 				}
 			}
+			this.displayList = this.currentList.slice(0, this.pageSize)
+			this.pageNum = 1
+			this.pullUpOn = true
+			this.loaddingMore = false
 		},
 		detail(order) {
 			if(order.refundNum){
@@ -148,7 +163,22 @@ export default {
 			})
 			console.log('order', order)
 		}
-	}
+	},
+	onReachBottom() {
+		if(!this.pullUpOn) return
+		if(this.pageNum >= this.currentList.length/this.pageSize){
+			setTimeout(() => {
+				this.loaddingMore = false
+				this.pullUpOn = false
+			}, 300)
+		}else{
+			this.loaddingMore = true
+			setTimeout(() => {
+				this.pageNum = this.pageNum+1
+				this.displayList = this.currentList.slice(0, this.pageSize*this.pageNum)
+			}, 300)
+		}
+	},
 };
 </script>
 
@@ -174,6 +204,7 @@ export default {
 .tui-goods-title {
 	width: 100%;
 	font-size: 28rpx;
+	padding: 12rpx 0;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;

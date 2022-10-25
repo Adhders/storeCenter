@@ -1,6 +1,6 @@
 <template>
 	<view class="tui-set-box">
-		<tui-list-cell padding="0" :lineLeft="false" :arrow="true" @click="href(1)">
+		<tui-list-cell padding="0" :lineLeft="false" :arrow="true" @click="href('customerInfo')">
 			<view class="tui-list-cell tui-info-box">
                 <view style=flex:1>
                    <image :src="userInfo.avatarUrl" class="tui-avatar"></image>
@@ -12,13 +12,13 @@
 			</view>
 		</tui-list-cell>
 		<view class="tui-mtop">
-			<tui-list-cell padding="0" :lineLeft="false" :arrow="true" @click="href(1)">
+			<tui-list-cell padding="0" :lineLeft="false" :arrow="true" @click="href('order')">
 				<view class="tui-list-cell tui-arrow-right">
 					<view>消费次数</view>
                     <view class="tui-right-value"> {{customerDetail.orderNum}} </view>
 				</view>
 			</tui-list-cell>
-            <tui-list-cell padding="0" :lineLeft="false" :arrow="true"  @click="href(2)">
+            <tui-list-cell padding="0" :lineLeft="false" :arrow="true"  @click="href('refundOrder')">
 				<view class="tui-list-cell tui-arrow-right">
 					<view>退款订单</view>
                     <view class="tui-right-value"> {{customerDetail.refundNum}} </view>
@@ -36,7 +36,7 @@
                     <view class="tui-right-value"> ￥{{ customerDetail.orderNum? (customerDetail.overall/customerDetail.orderNum).toFixed(2) : 0}}</view>
 				</view>
 			</tui-list-cell>
-			<tui-list-cell padding="0" :lineLeft="false"  @click="href(3)">
+			<tui-list-cell padding="0" :lineLeft="false">
 				<view class="tui-list-cell">
 					<view>上次消费时间</view>
                     <view class="tui-right-value" > {{customerDetail.lastTime | formatDate}} </view>
@@ -44,7 +44,7 @@
 			</tui-list-cell>
 		</view>
 		<view class="tui-mtop">
-            <tui-list-cell padding="0" :lineLeft="false" :arrow="true" @click="href(4)">
+            <tui-list-cell padding="0" :lineLeft="false" :arrow="true">
 				<view class="tui-list-cell tui-arrow-right">
 					<view>会员卡余额</view>
                     <view class="tui-right-value"> ￥0.00 </view>
@@ -76,32 +76,29 @@
 			}
 		},
 		onLoad(options){
-			this.userInfo = this.$store.state.targetCustomer
-			console.log('customer', this.userInfo)
-			let url = '/getCustomerDetail/' + options.openid
+			this.userInfo = JSON.parse(decodeURIComponent(options.customer))
+			let url = '/getCustomerDetail/' + this.userInfo.openid
 			this.tui.request(url,'GET', undefined, true).then((res)=>{
-				console.log('res', res)
 				this.customerDetail = res.customerDetail
 			})
 		},
 		filters: {
 			formatDate(v){
-				return utils.formatDate("y-m-d h:i:s", v)
+				return utils.formatDate("y-m-d", v)
 			},
 		},
 		methods: {
 			href(page) {
-				console.log('page', page)
 				let url = "";
 				switch (page) {
-					case 1:
-						url = "/pages/index/customerOrder/customerOrder?openid=" + this.userInfo.openid
+					case 'customerInfo':
+						url = "/pages/index/customerInfo/customerInfo?customer=" + encodeURIComponent(JSON.stringify(this.userInfo))
 						break;
-					case 2:
-						url = "/pages/index/customerRefundOrder/customerRefundOrder?openid=" + this.userInfo.openid
+					case 'order':
+						url = "/pages/my/myOrder/myOrder?openid=" + this.userInfo.openid
 						break;
-					case 3:
-						url = "/pages/my/notice/notice"
+					case 'refundOrder':
+						url = "/pages/my/refundList/refundList?openid=" + this.userInfo.openid
 						break;
 					default:
 						break;

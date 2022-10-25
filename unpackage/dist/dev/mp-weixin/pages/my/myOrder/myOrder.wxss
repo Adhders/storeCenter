@@ -48,6 +48,7 @@
 }
 .tui-goods-title {
   width: 100%;
+  padding: 12rpx 0;
   font-size: 28rpx;
   display: flex;
   align-items: center;
@@ -69,7 +70,7 @@
 }
 .tui-order-status {
   color: #e41f19;
-  font-size: 26rpx;
+  font-size: 28rpx;
   margin-left: 5px;
 }
 .tui-order-btn {

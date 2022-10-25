@@ -24,10 +24,9 @@ const store = createStore({
 		networkConnected: true,
 		isOnline: false,
 		width : 750,
-		targetCustomer: null,
 		refundList: [],
 		orderList: [],
-		storeState: {'pendingPay': 0, 'pendingDelivery': 0, 'refundOrder': 0, 'onSales': 0, 'putAway': 0, 'orderNum': 0, 'receipt': 0},
+		storeState: {'pendingPay': 0, 'pendingDelivery': 0, 'refundOrder': 0, 'onSales': 0, 'putAway': 0, 'orderNum': 0, 'receipt': '0.00'},
 		addressList: [],
 		currentReview: [],
 		goodsList: [],
@@ -60,9 +59,6 @@ const store = createStore({
 		setStoreState(state, storeState){
 		    state.storeState = storeState
 	    },
-		setTargetCustomer(state, customer){
-			state.targetCustomer = customer
-		},
 		setRefundList(state, refundList){
 			state.refundList = refundList
 		},

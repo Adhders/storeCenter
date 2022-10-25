@@ -947,7 +947,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"ThorUI-mall-uni","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"ThorUI-mall-uni","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -2254,10 +2254,9 @@ var store = new _vuex.default.Store({
     networkConnected: true,
     isOnline: false,
     width: 750,
-    targetCustomer: null,
     refundList: [],
     orderList: [],
-    storeState: { 'pendingPay': 0, 'pendingDelivery': 0, 'refundOrder': 0, 'onSales': 0, 'putAway': 0, 'orderNum': 0, 'receipt': 0 },
+    storeState: { 'pendingPay': 0, 'pendingDelivery': 0, 'refundOrder': 0, 'onSales': 0, 'putAway': 0, 'orderNum': 0, 'receipt': '0.00' },
     addressList: [],
     currentReview: [],
     goodsList: [],
@@ -2289,9 +2288,6 @@ var store = new _vuex.default.Store({
     },
     setStoreState: function setStoreState(state, storeState) {
       state.storeState = storeState;
-    },
-    setTargetCustomer: function setTargetCustomer(state, customer) {
-      state.targetCustomer = customer;
     },
     setRefundList: function setRefundList(state, refundList) {
       state.refundList = refundList;
@@ -3159,7 +3155,7 @@ var _store = _interopRequireDefault(__webpack_require__(/*! ../store */ 12));fun
 var tui = {
   //接口地址
   interfaceUrl: function interfaceUrl() {
-    //  return 'http://192.168.0.112:8000'
+    //  return 'http://192.168.0.115:8000'
     return 'https://chuangbiying.com/retail';
   },
   toast: function toast(text, duration, success) {
@@ -4603,7 +4599,7 @@ module.exports = index_cjs;
 
 /***/ }),
 
-/***/ 199:
+/***/ 193:
 /*!*********************************************************************************!*\
   !*** D:/Project/storeCenter/components/common/tui-validation/tui-validation.js ***!
   \*********************************************************************************/
@@ -4957,7 +4953,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 293:
+/***/ 287:
 /*!*********************************************************************!*\
   !*** D:/Project/storeCenter/components/thorui/tui-icon/tui-icon.js ***!
   \*********************************************************************/
@@ -10684,7 +10680,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"ThorUI-mall-uni","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"ThorUI-mall-uni","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -10705,14 +10701,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"ThorUI-mall-uni","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"ThorUI-mall-uni","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"ThorUI-mall-uni","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"ThorUI-mall-uni","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -10798,7 +10794,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"ThorUI-mall-uni","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"ThorUI-mall-uni","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -11209,7 +11205,7 @@ internalMixin(Vue);
 
 /***/ }),
 
-/***/ 336:
+/***/ 323:
 /*!***************************************************************************!*\
   !*** D:/Project/storeCenter/components/thorui/tui-form/tui-validation.js ***!
   \***************************************************************************/

@@ -1,5 +1,5 @@
 <template>
-	<view class="tui-container">
+	<view class="tui-container" :style="{paddingBottom: parseInt(scopeImgList.length/3)*20 + 'rpx'}">
 		<view @touchmove.stop.prevent="moveHandle" class="moveWrap">
 			<movable-area class="movarea" ref="areaBox" id="areaBox" :style="{height: height*rowNum  + 'rpx'}">
 				<view class="imgBox" :style="{height:width*rowNum  + 'rpx'}">
@@ -254,7 +254,7 @@
 		methods: {
 			initImages() {
 				this.statusArr = [];
-				this.imageList = [...this.value];
+				this.imageList = [...this.value.filter((o)=>{return o})];
 				for (let item of this.imageList) {
 					this.statusArr.push("1")
 				}
@@ -605,7 +605,7 @@
 		border-radius: 50%;
 		color: white;
 		font-size: 34rpx;
-		z-index: 999;
+		z-index: 10;
 	}
 
 	.tui-img-del::before {

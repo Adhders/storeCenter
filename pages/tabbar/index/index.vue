@@ -6,7 +6,7 @@
 				<image :src="storeInfo.trademark" class="tui-avatar"></image>
 				<view class="tui-store-info">
 					<view>{{storeInfo.storename}}</view>
-					<view class="tui-flex-center">
+					<view class="tui-flex-center" @click="shop">
 						<text>进店</text>
 						<tui-icon name="arrowright" :size="12" color="#f5bfbf"></tui-icon>
 					</view>
@@ -71,8 +71,8 @@
 				</tui-list-cell>
 				<view class="tui-order-list tui-assets-list">
 					<view class="tui-order-item" @tap="href(11)">
-						<view class="tui-amount">￥<text class="tui-text__large">{{state.receipt.toFixed(2).split('.')[0]}}</text>
-						.{{state.receipt.toFixed(2).split('.')[1]}}
+						<view class="tui-amount">￥<text class="tui-text__large">{{state.receipt.split('.')[0]}}</text>
+						.{{state.receipt.split('.')[1]}}
 						</view>
 						<view class="tui-assets-text">支付金额</view>
 					</view>
@@ -166,13 +166,29 @@
 			initial(pid, store_id){
 				let url = "/getStoreStaticData/" + pid + '/' + store_id
 				this.tui.request(url).then((res)=>{
-					console.log('res', res)
-					this.$store.commit('setStoreState', res.state)
-					this.visitData = res.data[0]
+					if(res.code==0){
+						this.$store.commit('setStoreState', res.state)
+						this.visitData = res.data[0]
+					}
 				})
 			},
 			menu(){
 				console.log('menu')
+			},
+			shop(){
+				if(this.isLogin){
+					uni.navigateToMiniProgram({
+						appId: this.storeInfo.appid,
+						path: 'pages/tabbar/index/index',
+						extraData: {},
+						success(res) {
+							console.log('success', res)
+						}
+					})
+				}
+				else{
+					uni.navigateTo({url: '/pages/login/login/login'})
+				}
 			},
 			href(page, index) {
 				//未登录状态下应跳转至登录页面，此处未作处理

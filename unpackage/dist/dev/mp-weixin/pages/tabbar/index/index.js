@@ -96,16 +96,13 @@ var components
 try {
   components = {
     tuiIcon: function() {
-      return Promise.all(/*! import() | components/thorui/tui-icon/tui-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/thorui/tui-icon/tui-icon")]).then(__webpack_require__.bind(null, /*! @/components/thorui/tui-icon/tui-icon.vue */ 288))
+      return Promise.all(/*! import() | components/thorui/tui-icon/tui-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/thorui/tui-icon/tui-icon")]).then(__webpack_require__.bind(null, /*! @/components/thorui/tui-icon/tui-icon.vue */ 282))
     },
     tuiListCell: function() {
-      return __webpack_require__.e(/*! import() | components/thorui/tui-list-cell/tui-list-cell */ "components/thorui/tui-list-cell/tui-list-cell").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-list-cell/tui-list-cell.vue */ 296))
+      return __webpack_require__.e(/*! import() | components/thorui/tui-list-cell/tui-list-cell */ "components/thorui/tui-list-cell/tui-list-cell").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-list-cell/tui-list-cell.vue */ 290))
     },
     tuiNoticeBar: function() {
-      return __webpack_require__.e(/*! import() | components/thorui/tui-notice-bar/tui-notice-bar */ "components/thorui/tui-notice-bar/tui-notice-bar").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-notice-bar/tui-notice-bar.vue */ 303))
-    },
-    tuiBottomNavigation: function() {
-      return __webpack_require__.e(/*! import() | components/thorui/tui-bottom-navigation/tui-bottom-navigation */ "components/thorui/tui-bottom-navigation/tui-bottom-navigation").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-bottom-navigation/tui-bottom-navigation.vue */ 310))
+      return __webpack_require__.e(/*! import() | components/thorui/tui-notice-bar/tui-notice-bar */ "components/thorui/tui-notice-bar/tui-notice-bar").then(__webpack_require__.bind(null, /*! @/components/thorui/tui-notice-bar/tui-notice-bar.vue */ 297))
     }
   }
 } catch (e) {
@@ -129,8 +126,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var g0 = _vm.state.receipt.toFixed(2).split(".")
-  var g1 = _vm.state.receipt.toFixed(2).split(".")
+  var g0 = _vm.state.receipt.split(".")
+  var g1 = _vm.state.receipt.split(".")
   _vm.$mp.data = Object.assign(
     {},
     {
@@ -300,9 +297,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 var _default =
 {
   data: function data() {
@@ -317,73 +311,7 @@ var _default =
       visitData: { visit_pv: 0, visit_uv: 0 },
       content: '',
       pid: '',
-      store_id: '',
-      itemList: [
-      {
-        text: '往期',
-        iconPath: '/static/components/bottom-navigation/icon_menu_gray.png',
-        selectedIconPath: '/static/components/bottom-navigation/icon_menu_gray.png',
-        color: '#666',
-        //1-选中切换，2-跳转、请求、其他操作，3-菜单
-        type: 3,
-        //自定义参数，类型自定义
-        parameter: null,
-        //子菜单left值,不传默认50%,当菜单贴近左右两边可用此参数调整
-        popupLeft: '',
-        itemList: [
-        {
-          //不建议超过6个字，请自行控制
-          text: '全部文章',
-          //自定义参数，类型自定义
-          parameter: null },
-
-        {
-          text: 'ThorUI小程序',
-          //自定义参数，类型自定义
-          parameter: null }] },
-
-
-
-      {
-        text: '小程序',
-        color: '#666',
-        //1-选中切换，2-跳转、请求、其他操作，3-菜单
-        type: 2,
-        //子菜单left值,不传默认50%,当菜单贴近左右两边可用此参数调整
-        popupLeft: '',
-        itemList: [] },
-
-      {
-        text: '更多',
-        iconPath: '/static/components/bottom-navigation/icon_menu_gray.png',
-        selectedIconPath: '/static/components/bottom-navigation/icon_menu_gray.png',
-        color: '#666',
-        //1-选中切换，2-跳转、请求、其他操作，3-菜单
-        type: 3,
-        //自定义参数，类型自定义
-        parameter: null,
-        //子菜单left值,不传默认50%,当菜单贴近左右两边可用此参数调整
-        popupLeft: '',
-        itemList: [
-        {
-          //不建议超过6个字，请自行控制
-          text: '打赏作者',
-          //自定义参数，类型自定义
-          parameter: null },
-
-        {
-          text: '联系我们',
-          //自定义参数，类型自定义
-          parameter: null },
-
-        {
-          text: 'ThorUI文档',
-          //自定义参数，类型自定义
-          parameter: null }] }] };
-
-
-
-
+      store_id: '' };
 
   },
   onLoad: function onLoad(options) {
@@ -410,24 +338,34 @@ var _default =
     initial: function initial(pid, store_id) {var _this = this;
       var url = "/getStoreStaticData/" + pid + '/' + store_id;
       this.tui.request(url).then(function (res) {
-        console.log('res', res);
-        _this.$store.commit('setStoreState', res.state);
-        _this.visitData = res.data[0];
+        if (res.code == 0) {
+          _this.$store.commit('setStoreState', res.state);
+          _this.visitData = res.data[0];
+        }
       });
     },
     menu: function menu() {
       console.log('menu');
     },
+    shop: function shop() {
+      if (this.isLogin) {
+        uni.navigateToMiniProgram({
+          appId: this.storeInfo.appid,
+          path: 'pages/tabbar/index/index',
+          extraData: {},
+          success: function success(res) {
+            console.log('success', res);
+          } });
+
+      } else
+      {
+        uni.navigateTo({ url: '/pages/login/login/login' });
+      }
+    },
     href: function href(page, index) {
       //未登录状态下应跳转至登录页面，此处未作处理
       var url = '';
       switch (page) {
-        case 2:
-          url = '/pages/my/set/set';
-          break;
-        case 3:
-          url = '/pages/my/storeInfo/storeInfo';
-          break;
         case 4:
           url = '/pages/my/myOrder/myOrder?currentTab=' + index;
           break;
@@ -440,19 +378,10 @@ var _default =
           break;}
 
       if (url) {
-        if (page == 3 && !this.isLogin) {
-          this.isLogin = true;
-          this.tui.toast('模拟登录成功~');
-        } else {
-          this.tui.href(url);
-        }
+        this.tui.href(url);
       } else {
         this.tui.toast('功能尚未完善~');
       }
-    },
-    login: function login() {
-      this.isLogin = true;
-      this.tui.toast('模拟登录成功~');
     },
     onAdd: function onAdd() {
       this.tui.href('/pages/index/product/product');

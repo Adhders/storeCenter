@@ -1,29 +1,17 @@
 <template>
 	<view class="container">
-		<view class="tui-order-header">
-			<!-- <image :src="webURL+'img_detail_bg.png'" mode="widthFix" class="tui-img-bg"></image> -->
-			<view class="tui-header-content">
-				<view>
-					<view class="tui-status-text">{{getStatusText(status)}}</view>
-					<view class="tui-reason"><text class="tui-reason-text">{{getReason(status)}}</text>
-						<tui-countdown :time="getTime(order.create_time)" color="rgba(254,254,254,0.75)"
-						 colonColor="rgba(254,254,254,0.75)" borderColor="transparent" @end="onEnd(order)"
-						 backgroundColor="transparent" v-if="status===1"></tui-countdown>
-					</view>
-				</view>
-				<image :src="getImg(status)" class="tui-status-img" mode="widthFix"></image>
-			</view>
-		</view>
-		<tui-list-cell unlined :hover="false">
+		<tui-list-cell unlined :hover="false" style="margin-top: 20rpx">
 			<view class="tui-flex-box">
 				<image :src="webURL+'img_order_address3x.png'" class="tui-icon-img"></image>
 				<view class="tui-addr">
-					<view class="tui-addr-userinfo">{{order.address.userName}}<text class="tui-addr-tel">{{order.address.telNumber | formatNumber}}</text></view>
+					<view class="tui-addr-userinfo">{{order.address.userName}}
+						<text class="tui-addr-tel">{{order.address.telNumber}}</text>
+						<tui-icon name="voipphone" :size="16" color="#ff0000" margin="0 10rpx" @tap="onCall"></tui-icon>
+					</view>
 					<view class="tui-addr-text">{{ order.address.location + order.address.detailInfo  }}</view>
 				</view>
 			</view>
 		</tui-list-cell>
-
 		<view class="tui-order-item">
 			<tui-list-cell :hover="false" :lineLeft="false">
 				<view class="tui-goods-title">
@@ -78,11 +66,11 @@
 <!--				</view>-->
 				<view class="tui-order-flex">
 					<view class="tui-item-title">创建时间:</view>
-					<view class="tui-item-content">{{order.create_time | formatDate}}</view>
+					<view class="tui-item-content">{{order.create_time}}</view>
 				</view>
 				<view class="tui-order-flex" v-if="order.payment_time">
 					<view class="tui-item-title">付款时间:</view>
-					<view class="tui-item-content">{{order.payment_time | formatDate}}</view>
+					<view class="tui-item-content">{{order.payment_time}}</view>
 				</view>
 				<view class="tui-order-flex" v-if="order.note">
 					<view class="tui-item-title">订单备注:</view>
@@ -100,7 +88,6 @@
 </template>
 
 <script>
-	import utils from "@/utils/util.js"
 	import tOrderItem from '@/components/views/t-order-item/t-order-item'
 	export default {
 		components: {
@@ -110,7 +97,7 @@
 			return {
 				webURL: "https://system.chuangbiying.com/static/images/mall/order/",
 				//1-待付款 2-付款成功 3-待收货 4-订单已完成 5-交易关闭
-				status: 2,
+				status: -1,
 				show: false,
 				address: {
 					userName: '',
@@ -133,17 +120,9 @@
 		},
 		onLoad(options){
 			this.order = JSON.parse(decodeURIComponent(options.order))
-			console.log('order', this.order)
-			this.status = this.getStatus(this.order.status)
 			this.address = this.order.address
 		},
 		filters: {
-			formatNumber(v){
-				return utils.formatNumber(v)
-			},
-			formatDate(v){
-				return utils.formatDate("y-m-d h:i:s", v)
-			},
 			getPrice(price) {
 				price = price || 0;
 				return price.toFixed(2)
@@ -158,41 +137,12 @@
 
 		},
 		methods: {
-			getStatus: function(status){
-				const statusList = [
-					{status: '待支付'}, {status: '待发货'}, {status: '待收货'},
-					{status: '待评价'}, {status: '交易成功'}, {status: '交易关闭'},
-					{status: '处理中'}, {status: '退款成功'}, {status: '拼团中'}, {status: '拼团失败，已退款'}
-				]
-				return statusList.findIndex((o)=>{return o.status===status})
-			},
-			getTime(time){
-				time = time.replace(/-/g, "/") //如果不转化，在ios设备上会计算错误
-				const expireTime = 24*60*60*1000 //一天后过期
-				let t1 = Date.parse(new Date(time)) + expireTime
-				let t2 = Date.parse(new Date())
-				return (t1-t2)/1000
-			},
 			onCall: function() {
 				// #ifdef MP-WEIXIN
 				wx.makePhoneCall({
-					phoneNumber: this.phone
+					phoneNumber: this.order.address.telNumber
 				})
 				// #endif
-			},
-			getImg: function(status) {
-				return this.webURL + ["img_order_payment3x.png", "img_order_send3x.png", "img_order_received3x.png",
-					"img_order_signed3x.png", "img_order_signed3x.png",  "img_order_closed3x.png", "img_waiting.png", "img_success3x.png",
-					// 拼团订单
-					"img_waiting.png", "img_success3x.png"
-				][status]
-			},
-			getStatusText: function(status) {
-				return ["等待您付款", "付款成功", "待收货", "待评价", "交易成功", "交易关闭", '处理中', "退款成功", "拼团订单", "拼团订单"][status]
-			},
-			getReason: function(status) {
-				return ["", "等待卖家发货", "还剩X天XX小时自动确认", "", "感谢购买我们的商品，欢迎下次再来!", "超时未付款，订单自动取消", "等待商家处理", "",
-				 '拼团中', '拼团失败，已退款'][status]
 			},
 			logistics() {
 				this.tui.href("/pages/my/logistics/logistics")
